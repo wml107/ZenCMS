@@ -1,3 +1,5 @@
+<p align="center">![](https://img.shields.io/github/forks/wml107/ZenCMS.svg)![](https://img.shields.io/github/stars/wml107/ZenCMS.svg)![](https://img.shields.io/github/watchers/wml107/ZenCMS.svg)![](https://img.shields.io/github/followers/wml107.svg?style=social&label=Follow&maxAge=2592000)![](https://img.shields.io/github/issues/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-closed/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-pr/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-pr-closed/wml107/ZenCMS.svg)![](https://img.shields.io/github/languages/code-size/wml107/ZenCMS)![](https://img.shields.io/github/downloads/wml107/ZenCMS/total)</p>
+
 这是一个开源的内容管理平台，使用它你可以轻松的组织、发表自己的内容，快速部署自己的网站，可以用于构建个人博客，也可以用来搭建组织、企业门户网站。
 
 Zen-CMS致力于：
@@ -14,10 +16,15 @@ Zen-CMS致力于：
 
 ### 技术栈
 
-<img src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white" style="border-radius:7px;">
-<img src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white" style="border-radius:7px;">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" style="border-radius:7px;">
-<img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" style="border-radius:7px;">
+![](https://img.shields.io/badge/HTML5-209123?logo=html5&logoColor=white) ![](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![](https://img.shields.io/badge/Bootstrap-563D7C?logo=bootstrap&logoColor=white) ![](https://img.shields.io/badge/Vue.js-35495E?logo=vue.js&logoColor=4FC08D) ![](https://img.shields.io/badge/Webpack-f5f5f5?logo=Webpack&logoColor=8DD6F9) ![](https://img.shields.io/badge/Axios-FFFFFF?logo=Axios&logoColor=5A29E4)
+
+
+![](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white) ![](https://img.shields.io/badge/Express.js-404D59?logo=Express&logoColor=000000) ![](https://img.shields.io/badge/Nest.js-f5f5f5?logo=NestJS&logoColor=E0234E) ![](https://img.shields.io/badge/SQLite-07405E?logo=sqlite&logoColor=white)
+
+![](https://img.shields.io/badge/Node.js-43853D?logo=node.js&logoColor=white) ![](https://img.shields.io/badge/npm-5A5A5A?logo=npm&logoColor=#CB3837) ![](https://img.shields.io/badge/PM2-f5f5f5?logo=PM2&logoColor=2B037A) ![](https://img.shields.io/badge/NGINX-f5f5f5?logo=NGINX&logoColor=009639) ![](https://img.shields.io/badge/Docker-f5f5f5?logo=Docker&logoColor=2496ED) ![](https://img.shields.io/badge/Cloudflare-ffffff?logo=Cloudflare&logoColor=F38020)
+
+
+
 
 # Feature
 
@@ -147,7 +154,7 @@ Zen-CMS致力于：
 
 并且出于前端与后端所做的事情在业务逻辑上存在很大的差异，本文档就以这一点为分界，将需求分析/系统设计/功能定义/etc拆分成两部分，分别从客户端和服务端的角度来定义系统、描述某功能的细节。这就引出了下面五个文档。
 
-### 接口文档
+### <a>接口文档</a>
 
 主要定义了：
 
@@ -157,18 +164,18 @@ Zen-CMS致力于：
 - 一些表达特定含义的符号
 - 数据模型(主要是约定命名)
 
-### 后端-代码实现与结构
+### <a>后端-代码实现与结构</a>
 
 从代码实现的角度，介绍本系统服务端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### 后端-功能模块详细设计
+### <a>后端-功能模块详细设计</a>
 
 从业务逻辑的角度，介绍服务端层面，系统各个功能接口的各项细节、处理流程。
 
-### 前端-代码实现与结构
+### <a>前端-代码实现与结构</a>
 
 从代码实现的角度，介绍本系统客户端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### 前端-功能模块详细设计
+### <a>前端-功能模块详细设计</a>
 
 从业务逻辑的角度，介绍客户端层面，系统各个功能接口的各项细节、处理流程。介绍了如何组织各个功能，以及构建了怎样的数据层与交互层。
