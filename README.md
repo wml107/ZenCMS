@@ -1,5 +1,5 @@
 <p align="center">
-    <strong style="font-size: 50px">Zen CMS</strong><br>
+    <h1 align="center">Zen CMS</h1>
     <a href=""><img alt="GitHub forks" src="https://img.shields.io/github/forks/wml107/ZenCMS.svg" /></a>
     <a href=""><img alt="GitHub stars" src="https://img.shields.io/github/stars/wml107/ZenCMS.svg" /></a>
     <a href=""><img alt="GitHub watchs" src="https://img.shields.io/github/watchers/wml107/ZenCMS.svg" /></a>
