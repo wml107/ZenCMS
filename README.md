@@ -37,7 +37,7 @@ Zen-CMS致力于：
 
 ### 快速跳转
 
-<a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9">如何构建图文内容</a>	<a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9%E7%9A%84%E7%BB%84%E7%BB%87">如何组织图文内容</a>	<a href="https://github.com/wml107/ZenCMS#%E6%96%87%E6%A1%A3">文档</a>	<a href="https://github.com/wml107/ZenCMS#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97">快速开始</a>
+<a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9">如何构建图文内容</a>  |  <a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9%E7%9A%84%E7%BB%84%E7%BB%87">如何组织图文内容</a>  |  <a href="https://github.com/wml107/ZenCMS#%E6%96%87%E6%A1%A3">文档</a>  |  <a href="https://github.com/wml107/ZenCMS#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97">快速开始</a>
 
 ---
 
