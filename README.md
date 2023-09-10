@@ -1,4 +1,16 @@
-<p align="center">![](https://img.shields.io/github/forks/wml107/ZenCMS.svg)![](https://img.shields.io/github/stars/wml107/ZenCMS.svg)![](https://img.shields.io/github/watchers/wml107/ZenCMS.svg)![](https://img.shields.io/github/followers/wml107.svg?style=social&label=Follow&maxAge=2592000)![](https://img.shields.io/github/issues/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-closed/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-pr/wml107/ZenCMS.svg)![](https://img.shields.io/github/issues-pr-closed/wml107/ZenCMS.svg)![](https://img.shields.io/github/languages/code-size/wml107/ZenCMS)![](https://img.shields.io/github/downloads/wml107/ZenCMS/total)</p>
+<p align="center">
+    <strong style="font-size: 50px">Zen CMS</strong><br>
+    <a href=""><img alt="GitHub forks" src="https://img.shields.io/github/forks/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub stars" src="https://img.shields.io/github/stars/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub watchs" src="https://img.shields.io/github/watchers/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub followers" src="https://img.shields.io/github/followers/wml107.svg?style=social&label=Follow&maxAge=2592000" /></a>
+    <a href="https://github.com/wml107/ZenCMS/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub issues-closed" src="https://img.shields.io/github/issues-closed/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub issues-pr" src="https://img.shields.io/github/issues-pr/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub issues-pr-closed" src="https://img.shields.io/github/issues-pr-closed/wml107/ZenCMS.svg" /></a>
+    <a href=""><img alt="GitHub size" src="https://img.shields.io/github/languages/code-size/wml107/ZenCMS" /></a>
+    <a href=""><img alt="GitHub downloads" src="https://img.shields.io/github/downloads/wml107/ZenCMS/total" /></a>
+</p>
 
 这是一个开源的内容管理平台，使用它你可以轻松的组织、发表自己的内容，快速部署自己的网站，可以用于构建个人博客，也可以用来搭建组织、企业门户网站。
 
