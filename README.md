@@ -1,5 +1,5 @@
 <p align="center">
-    <h3 align="center">Zen CMS</h3>
+    <h1 align="center">Zen CMS</h1>
     <a href=""><img alt="GitHub forks" src="https://img.shields.io/github/forks/wml107/ZenCMS.svg" /></a>
     <a href=""><img alt="GitHub stars" src="https://img.shields.io/github/stars/wml107/ZenCMS.svg" /></a>
     <a href=""><img alt="GitHub watchs" src="https://img.shields.io/github/watchers/wml107/ZenCMS.svg" /></a>
@@ -35,6 +35,11 @@ Zen-CMS致力于：
 
 ![](https://img.shields.io/badge/Node.js-43853D?logo=node.js&logoColor=white) ![](https://img.shields.io/badge/npm-5A5A5A?logo=npm&logoColor=#CB3837) ![](https://img.shields.io/badge/PM2-f5f5f5?logo=PM2&logoColor=2B037A) ![](https://img.shields.io/badge/NGINX-f5f5f5?logo=NGINX&logoColor=009639) ![](https://img.shields.io/badge/Docker-f5f5f5?logo=Docker&logoColor=2496ED) ![](https://img.shields.io/badge/Cloudflare-ffffff?logo=Cloudflare&logoColor=F38020)
 
+### 快速跳转
+
+<a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9">如何构建图文内容</a>	<a href="https://github.com/wml107/ZenCMS#%E5%9B%BE%E6%96%87%E5%86%85%E5%AE%B9%E7%9A%84%E7%BB%84%E7%BB%87">如何组织图文内容</a>	<a href="https://github.com/wml107/ZenCMS#%E6%96%87%E6%A1%A3">文档</a>	<a href="https://github.com/wml107/ZenCMS#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97">快速开始</a>
+
+---
 
 
 
@@ -152,11 +157,11 @@ Zen-CMS致力于：
 
 # 文档
 
-### 使用指南
+### <a href="https://github.com/wml107/ZenCMS">使用指南</a>
 
 根据指南你可以轻松部署安装本系统，了解系统各功能的使用。
 
-### 功能列表、开发进度
+### <a href="https://github.com/wml107/ZenCMS">功能列表、开发进度</a>
 
 这个文档详细的罗列了Zen-CMS具备的功能：哪些是已开发完成的、哪些是列入计划的、哪些还处于构思阶段。
 
@@ -166,7 +171,7 @@ Zen-CMS致力于：
 
 并且出于前端与后端所做的事情在业务逻辑上存在很大的差异，本文档就以这一点为分界，将需求分析/系统设计/功能定义/etc拆分成两部分，分别从客户端和服务端的角度来定义系统、描述某功能的细节。这就引出了下面五个文档。
 
-### <a>接口文档</a>
+### <a href="https://github.com/wml107/ZenCMS">接口文档</a>
 
 主要定义了：
 
@@ -176,18 +181,18 @@ Zen-CMS致力于：
 - 一些表达特定含义的符号
 - 数据模型(主要是约定命名)
 
-### <a>后端-代码实现与结构</a>
+### <a href="https://github.com/wml107/ZenCMS">后端-代码实现与结构</a>
 
 从代码实现的角度，介绍本系统服务端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### <a>后端-功能模块详细设计</a>
+### <a href="https://github.com/wml107/ZenCMS">后端-功能模块详细设计</a>
 
 从业务逻辑的角度，介绍服务端层面，系统各个功能接口的各项细节、处理流程。
 
-### <a>前端-代码实现与结构</a>
+### <a href="https://github.com/wml107/ZenCMS">前端-代码实现与结构</a>
 
 从代码实现的角度，介绍本系统客户端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### <a>前端-功能模块详细设计</a>
+### <a href="https://github.com/wml107/ZenCMS">前端-功能模块详细设计</a>
 
 从业务逻辑的角度，介绍客户端层面，系统各个功能接口的各项细节、处理流程。介绍了如何组织各个功能，以及构建了怎样的数据层与交互层。
