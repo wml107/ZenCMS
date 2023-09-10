@@ -10,7 +10,7 @@ Zen-CMS致力于：
 
 ### 许可证
 
-![https://github.com/wml107/ZenCMS/blob/main/LICENSE](https://img.shields.io/github/license/wml107/ZenCMS)
+[![Github](https://img.shields.io/github/license/wml107/ZenCMS)](https://github.com/wml107/ZenCMS/blob/main/LICENSE)
 
 ### 技术栈
 
