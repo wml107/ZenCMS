@@ -1,0 +1,9 @@
+export declare const Public: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const PostW: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const ResourceR: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const ResourceW: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const SiteR: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const SiteW: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const StructureW: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const UserR: () => import("@nestjs/common").CustomDecorator<string>;
+export declare const UserW: () => import("@nestjs/common").CustomDecorator<string>;

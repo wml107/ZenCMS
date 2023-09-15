@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserW = exports.UserR = exports.StructureW = exports.SiteW = exports.SiteR = exports.ResourceW = exports.ResourceR = exports.PostW = exports.Public = void 0;
+const common_1 = require("@nestjs/common");
+const Public = () => (0, common_1.SetMetadata)("isPublic", true);
+exports.Public = Public;
+const PostW = () => (0, common_1.SetMetadata)("claim", "PostW");
+exports.PostW = PostW;
+const ResourceR = () => (0, common_1.SetMetadata)("claim", "ResourceR");
+exports.ResourceR = ResourceR;
+const ResourceW = () => (0, common_1.SetMetadata)("claim", "ResourceW");
+exports.ResourceW = ResourceW;
+const SiteR = () => (0, common_1.SetMetadata)("claim", "SiteR");
+exports.SiteR = SiteR;
+const SiteW = () => (0, common_1.SetMetadata)("claim", "SiteW");
+exports.SiteW = SiteW;
+const StructureW = () => (0, common_1.SetMetadata)("claim", "StructureW");
+exports.StructureW = StructureW;
+const UserR = () => (0, common_1.SetMetadata)("claim", "UserR");
+exports.UserR = UserR;
+const UserW = () => (0, common_1.SetMetadata)("claim", "UserW");
+exports.UserW = UserW;
+//# sourceMappingURL=authorization.decorator.js.map
