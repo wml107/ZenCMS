@@ -33,7 +33,7 @@ import { LogErrorFilter } from './filter/logError.filter';
     }),
     //提供静态资源
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'data/resource'),
+      rootPath: pkgJson.dataPath + '/resource',
       serveRoot: '/resource',
       exclude: [
         'content',

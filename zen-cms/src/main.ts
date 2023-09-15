@@ -9,7 +9,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());
   //配置前端网页
-  app.useStaticAssets(join(__dirname, '..', 'static'));
+  app.useStaticAssets(join(__dirname, '../..', 'static'));
   await app.listen(80);
 }
 bootstrap();

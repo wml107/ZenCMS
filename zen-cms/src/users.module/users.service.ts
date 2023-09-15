@@ -11,7 +11,7 @@ import { CreateUserUserDto } from './dto/createUser.user';
 import { UpdateUserUserDto } from './dto/updateUser.user';
 import { DelUserUserDto } from './dto/delUser.user';
 import bcrypt from 'bcryptjs';
-import pkgJson from '../../package.json'
+import pkgJson from '../../package.json';
 import { ResponseCode, generateResponse } from 'src/utils/Response';
 
 
