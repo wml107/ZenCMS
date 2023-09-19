@@ -21,7 +21,9 @@ export class RefreshTokenInterceptor implements NestInterceptor {
                 del: userOld.expire
             }
             res.cookie("Authorization", 
-            "Bearer " + this.authService.generateToken(userNew).access_token);
+            "Bearer " + this.authService.generateToken(userNew).access_token, {
+                maxAge: 12*60*60*1000 //半天过期
+            });
         }
         return next
         .handle();

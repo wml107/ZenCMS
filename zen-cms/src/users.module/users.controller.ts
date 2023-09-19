@@ -23,7 +23,13 @@ export class UsersController {
     @Public()
     @UseGuards(AuthGuard('local'))
     login(@Request() req, @Response() res) {
-        res.send(generateResponse(ResponseCode.OK, "", null));
+        this.usersService.expire(req.user.id);
+        res.send(generateResponse(ResponseCode.OK, "", req.user));
+    }
+
+    @Get("autoLogin")
+    autoLogin(@Request() req, @Response() res){
+        res.send(generateResponse(ResponseCode.OK, "", req.user));
     }
 
     @Post('updatePassword')
@@ -38,7 +44,8 @@ export class UsersController {
 
     @Get('quit')
     async quit(@Request() req){
-        return this.usersService.expire(req.user.username);
+        this.usersService.expire(req.user.id);
+        return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Get('listRole')

@@ -53,13 +53,13 @@ export class UsersService {
         return generateResponse(ResponseCode.OK, "", null);
     }
 
-    async expire(username: string) {
+    async expire(id: number) {
         const res = await this.userRepository.update({
-            username: username
+            id: id
         }, {
             expire: Date.now()
         });
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 
     async listRole() {

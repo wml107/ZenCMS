@@ -19,23 +19,24 @@
 
 **内容组织结构管理**
 
-| 功能                         | 状态                                            | 版本号 |
-| ---------------------------- | ----------------------------------------------- | ------ |
-| 浏览层节点配置               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 新增节点                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 删除节点                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 交换节点位置                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 编辑节点                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 获取节点树                   | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 根据节点树加载网站菜单、路由 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 根据节点树定位当前位置       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 根据节点树获取对应资源       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 获取标签列表                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 新增标签                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 删除标签                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 交换标签位置                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 编辑标签                     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 按标签获取内容节点列表       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 功能                                   | 状态                                            | 版本号 |
+| -------------------------------------- | ----------------------------------------------- | ------ |
+| 浏览层节点配置                         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 新增节点                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 删除节点                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 交换节点位置                           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑节点                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 获取节点树                             | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 根据节点树加载网站菜单、路由           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 根据节点树定位当前位置                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 根据节点树获取对应资源                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 获取标签列表                           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 新增标签                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 删除标签                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 交换标签位置                           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑标签                               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 按标签获取内容节点列表                 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 以源代码模式直接编辑json完成层结构设置 | ![](https://img.shields.io/badge/规划中-7D7C7C) |        |
 
 **动态**
 
@@ -74,19 +75,19 @@
 
 **权限、用户管理**
 
-| 功能                      | 状态                                            | 版本号 |
-| ------------------------- | ----------------------------------------------- | ------ |
-| 鉴权-用户登录             | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 鉴权-退出登录             | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 鉴权-特定功能需要登录状态 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 鉴权-特定功能需特定权限   | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 密码修改                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 获取角色列表              | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 新增角色                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 编辑角色                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 删除角色                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 获取用户列表              | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 新增用户                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 编辑用户                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 删除用户                  | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 功能                                           | 状态                                            | 版本号 |
+| ---------------------------------------------- | ----------------------------------------------- | ------ |
+| Authentication-用户登录                        | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| Authorization-特定功能检查登录状态、所需要权限 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| Authorization-自动登录                         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| Authorization-退出登录                         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 密码修改                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 获取角色列表                                   | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 新增角色                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑角色                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 删除角色                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 获取用户列表                                   | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 新增用户                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑用户                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 删除用户                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
 

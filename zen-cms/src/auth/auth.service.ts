@@ -22,7 +22,14 @@ export class AuthService {
             .getOne();
         if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
-            return result;
+            const temp = await this.getUser(result.id);
+            let userInfo = {
+                id: temp.id,
+                username: temp.username,
+                role: temp.role,
+                claims: temp.role === 'super' ? [] : await this.getClaims(temp.role)
+            }
+            return userInfo;
         }
         return null;
     }
@@ -36,14 +43,14 @@ export class AuthService {
         };
     }
 
-    async getRole(id: number) {
-        const role = (await this.usersRepository
+    //从token里解析出来的payload不见得都是最新的用户信息，所有有时候还要接着id去数据库查一下
+    async getUser(id: number) {
+        const user = await this.usersRepository
             .createQueryBuilder('User')
             .where('User.del = 0')
             .andWhere('User.id = :id', { id: id })
-            .select(["User.role"])
-            .getOne()).role;
-        return role;
+            .getOne();
+        return user;
     }
 
     async getClaims(rolename: string) {
@@ -64,7 +71,7 @@ export class AuthService {
             .andWhere('User.id = :id', { id: id })
             .select(["User.expire"])
             .getOne()).expire;
-        if (signDate > expire) return false;
+        if (signDate < expire) return false;
         return true;
     }
 }

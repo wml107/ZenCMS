@@ -31,7 +31,7 @@ export class JwtAuthGard extends AuthGuard('jwt') {
       const { id, signDate } = context.switchToHttp().getRequest().user;
       if (await this.authService.isExpire(id, signDate)) throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
       //根据username获取其角色
-      const role = await this.authService.getRole(id);
+      const role = (await this.authService.getUser(id)).role;
       //根据角色获取其具备权限,
       //如果不需要什么特别的权限(claim为undefined)或者用户为超管那就直接返回成功
       if (role === 'super' || claim === undefined) return true;
