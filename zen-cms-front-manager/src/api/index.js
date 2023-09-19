@@ -11,7 +11,6 @@ axios.interceptors.request.use(function (config) {
 });
 
 axios.interceptors.response.use(function (response) {
-    console.log(response);
     return response;
 }, function(error) {
     switch(error.response.data.statusCode){

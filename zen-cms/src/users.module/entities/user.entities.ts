@@ -16,9 +16,4 @@ export class User {
     default: 0
   })
   expire: number;
-  @Column({
-    type: 'int2',
-    default: 0
-  })
-  del: number;
 }

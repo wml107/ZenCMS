@@ -65,7 +65,6 @@ export class UsersService {
     async listRole() {
         const res = await this.roleRepository
             .createQueryBuilder('Role')
-            .where('Role.del = 0')
             .getMany();
 
         return generateResponse(ResponseCode.OK, "", res);
@@ -102,8 +101,7 @@ export class UsersService {
         //删角色要确保角色没有被用户引用
         const quote = await this.userRepository
             .createQueryBuilder('User')
-            .where('User.del = 0')
-            .andWhere('User.role = :role', { role: delRoleUserDto.rolename })
+            .where('User.role = :role', { role: delRoleUserDto.rolename })
             .getMany();
         if (quote.length > 0) throw new HttpException("role is being referenced", ResponseCode.REFERENCED);
 
@@ -117,7 +115,6 @@ export class UsersService {
     async listUser() {
         const res = await this.userRepository
             .createQueryBuilder('User')
-            .where('User.del = 0')
             .getMany();
 
         return generateResponse(ResponseCode.OK, "", res);
@@ -166,8 +163,7 @@ export class UsersService {
                 await queryRunner.manager.update(User,
                     await this.userRepository
                         .createQueryBuilder('User')
-                        .where('User.del = 0')
-                        .andWhere('User.username = :username', { username: updateUserUserDto.oldUsername })
+                        .where('User.username = :username', { username: updateUserUserDto.oldUsername })
                         .andWhere("User.role != 'super'")
                         .getOne(),
                     updateObj
@@ -194,8 +190,7 @@ export class UsersService {
         await this.userRepository.remove(
             await this.userRepository
                 .createQueryBuilder('User')
-                .where('User.del = 0')
-                .andWhere('User.username = :username', { username: delUserUserDto.username })
+                .where('User.username = :username', { username: delUserUserDto.username })
                 .andWhere("User.role != 'super'")
                 .getMany()
         );

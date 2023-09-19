@@ -9,9 +9,4 @@ export class Role {
   rolename: string;
   @Column('simple-array')
   claims: string[];
-  @Column({
-    type: 'int2',
-    default: 0
-  })
-  del: number;
 }
