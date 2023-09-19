@@ -43,14 +43,14 @@ export class UsersService {
         }
     }
 
-    async updatePassword(updatePasswordUserDto: UpdatePasswordUserDto) {
+    async updatePassword(updatePasswordUserDto: UpdatePasswordUserDto, id: number) {
         const res = await this.userRepository.update({
-            username: updatePasswordUserDto.username
+            id: id
         }, {
             password: await bcrypt.hash(updatePasswordUserDto.newPassword, 10),
             expire: Date.now()
         });
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 
     async expire(id: number) {

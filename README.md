@@ -185,7 +185,7 @@ Zen-CMS致力于：
 
 从代码实现的角度，介绍本系统服务端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### <a href="https://github.com/wml107/ZenCMS/blob/main/doc/backendDesign.md">后端-功能模块详细设计</a>
+### <a href="https://github.com/wml107/ZenCMS/blob/main/doc/backendDesign.md">后端-详细设计</a>
 
 从业务逻辑的角度，介绍服务端层面，系统各个功能接口的各项细节、处理流程。
 
@@ -193,6 +193,6 @@ Zen-CMS致力于：
 
 从代码实现的角度，介绍本系统客户端的实现思路、代码结构。方便有需要的同学理解代码实现、进行二次开发。
 
-### <a href="https://github.com/wml107/ZenCMS/blob/main/doc/frontendDesign.md">前端-功能模块详细设计</a>
+### <a href="https://github.com/wml107/ZenCMS/blob/main/doc/frontendDesign.md">前端-详细设计</a>
 
 从业务逻辑的角度，介绍客户端层面，系统各个功能接口的各项细节、处理流程。介绍了如何组织各个功能，以及构建了怎样的数据层与交互层。

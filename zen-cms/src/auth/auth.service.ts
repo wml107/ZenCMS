@@ -36,7 +36,7 @@ export class AuthService {
 
     generateToken(user) {
         const payload = Object.assign(user, {
-            signDate: Date.now()
+            signDate: Date.now()+3000
         });
         return {
             access_token: this.jwtService.sign(payload),
@@ -71,7 +71,7 @@ export class AuthService {
             .andWhere('User.id = :id', { id: id })
             .select(["User.expire"])
             .getOne()).expire;
-        if (signDate < expire) return false;
-        return true;
+        if (signDate < expire) return true;
+        return false;
     }
 }
