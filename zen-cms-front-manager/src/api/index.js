@@ -1,5 +1,5 @@
 const { ElMessage } = require('element-plus');
-const { default: getToken } = require('../util/getToken');
+const { default: getToken } = require('../utils/getToken');
 import router from '../router/index';
 
 const axios = require('axios').default;

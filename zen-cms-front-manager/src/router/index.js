@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import  getToken  from '../util/getToken.js'
+import  getToken  from '../utils/getToken.js'
 //Login
 import Login from '../views/auth/Login.vue';
 //Home
