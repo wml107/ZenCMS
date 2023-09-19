@@ -54,7 +54,7 @@
 
 ### 各功能接口设计
 
-##### **Authentication-用户登录 | /user/login**
+#### Authentication-用户登录 | /user/login
 
 功能：校验用户账户密码正确与否。
 
@@ -80,7 +80,7 @@
 - 成功：检验密码是否正确(local守卫)→读取用户信息并放入context(local守卫)→令先前token失效(controller调用service)→发送带有用户信息的成功响应(controller)→刷新token设置在cookie中(响应拦截器)。
 - 失败：检验密码是否正确(local守卫)→抛出相应业务异常-这里是直接返回false即可(local守卫)。
 
-##### **Authorization-特定功能检查登录状态、所需要权限 | Header-Authorization**
+#### Authorization-特定功能检查登录状态、所需要权限 | Header-Authorization
 
 这是一个通用功能，是很多其他功能的前置流程。在其他涉及该功能使用的地方不再重复。
 
@@ -111,7 +111,7 @@
 
    又因为如果鉴权失败会直接抛出异常，代码进入filter层，根本不进入interceptor层(不刻意捕捉得话)，所以就算jwt基本有效性检验通过后面的检验失败，用户信息被误放入context中，也会因为没有进入响应拦截器而被忽略。
 
-##### **Authorization-自动登录 | /user/autoLogin**
+#### Authorization-自动登录 | /user/autoLogin
 
 功能：用户进入应用时，在有token的情况下，客户端自动校验登录状态完成登录。
 
@@ -127,7 +127,7 @@
 - 成功：检验token(Jwt守卫)→读取用户信息并放入context(Jwt守卫)→发送带有用户信息的成功响应(controller)→刷新token设置在cookie中(响应拦截器)。
 - 失败：检验token(Jwt守卫)→抛出相应业务异常-这里是直接返回false即可(Jwt守卫)。
 
-##### **Authorization-退出登录 | /user/quit**
+#### Authorization-退出登录 | /user/quit
 
 功能：作废原先所有的token。
 
@@ -139,7 +139,7 @@
 
 令所有之前的token失效(controller调用service)→发送成功响应(controller)。
 
-##### **密码修改 | /user/updatePassword**
+#### 密码修改 | /user/updatePassword
 
 功能：修改用户的密码；作废原来的token。
 
