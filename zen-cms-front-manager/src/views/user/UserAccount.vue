@@ -50,7 +50,7 @@ export default {
                 this.$router.push('/login');
             } else {
                 ElMessage({
-                    message: res.msg,
+                    message: res.message,
                     type: 'error',
                     duration: 1500
                 });

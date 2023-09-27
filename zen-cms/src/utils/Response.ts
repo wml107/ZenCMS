@@ -13,10 +13,10 @@ export const ResponseCode = {
     REFERENCED: 465,
 }
 
-export function generateResponse(statusCode, msg, data){
+export function generateResponse(statusCode, message, data){
     return {
         statusCode: statusCode,
-        message: msg,
+        message: message,
         data: data
     }
 }

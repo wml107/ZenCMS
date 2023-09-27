@@ -47,9 +47,9 @@ export default {
                 });
                 this.$router.push('/home');
             } else {
-                let msg = (res.msg === '' || typeof (res.msg) === 'undefined') ? '服务器内部错误，请联系管理员。' : res.msg;
+                let message = (res.message === '' || typeof (res.message) === 'undefined') ? '服务器内部错误，请联系管理员。' : res.message;
                 ElMessage({
-                    message: msg,
+                    message: message,
                     type: 'info',
                     duration: 1500
                 });
