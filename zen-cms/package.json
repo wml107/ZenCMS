@@ -5,7 +5,7 @@
     "author": "",
     "private": true,
     "license": "UNLICENSED",
-    "dataPath": "E:\\ZenCMS\\data",
+    "dataPath": "D:\\ZenCMS\\data",
     "secret": "secretKey",
     "scripts": {
         "build": "nest build",
@@ -29,6 +29,7 @@
         "@nestjs/platform-express": "^10.0.0",
         "@nestjs/serve-static": "^4.0.0",
         "@nestjs/typeorm": "^10.0.0",
+        "bcryptjs": "^2.4.3",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
         "compressing": "^1.10.0",
@@ -37,13 +38,12 @@
         "passport": "^0.6.0",
         "passport-jwt": "^4.0.1",
         "passport-local": "^1.0.0",
+        "readline-sync": "1.4.10",
         "reflect-metadata": "^0.1.13",
         "request-ip": "^3.3.0",
         "rxjs": "^7.8.1",
         "sqlite3": "^5.1.6",
-        "typeorm": "^0.3.17",
-        "bcryptjs": "^2.4.3",
-        "readline-sync": "1.4.10"
+        "typeorm": "^0.3.17"
     },
     "devDependencies": {
         "@nestjs/cli": "^10.0.0",

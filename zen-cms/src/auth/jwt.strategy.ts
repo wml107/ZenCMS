@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       id: temp.id,
       username: temp.username,
       role: temp.role,
-      claims: temp.role === 'super' ? [] : await this.authService.getClaims(payload.id),
+      claims: temp.role === 'super' ? [] : await this.authService.getClaims(payload.role),
       signDate: payload.signDate
     }
     return userInfo;

@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import  getToken  from '../utils/getToken.js'
+import getToken from '../utils/getToken.js'
+//store
+import store from '../store/index.js';
 //Login
 import Login from '../views/auth/Login.vue';
+//NotFound
+import NotFound from '../views/NotFound.vue';
 //Home
 import Home from '../views/home/Home.vue';
 import HomeInfo from '../views/home/HomeInfo.vue';
@@ -37,6 +41,11 @@ const routes = [
     path: '/login',
     name: "Login",
     component: Login
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: NotFound
   },
   {
     path: '/home',
@@ -130,25 +139,25 @@ const routes = [
       {
         path: '/user/role',
         name: 'Role',
-        component: UserRole
+        component: UserRole,
+        meta: {
+          claim: 'UserR'
+        }
       },
       {
         path: '/user/user',
         name: "User",
-        component: UserUser
+        component: UserUser,
+        meta: {
+          claim: 'UserR'
+        }
       },
     ]
   },
-  //这里是希望适配一些边界情况，在用户输入一些客户端识别不了的url的情况下，都跳转到首页。但是不知道怎么的，vue-router的通配符不太起作用，就只能用这种动态路由的方式凑活一下。
-  //但这也只是一个临时的补救，因为通配符只能解决它这一级的路由输入意料之外的参数，没有办法递归的定义很多层的边界情况，这里只写了两层，应付大多数情况。
   {
-    path: '/:q',
-    redirect: '/home'
+    path: '/:catchAll(.*)',
+    redirect: '/404'
   },
-  {
-    path: '/:q/:q',
-    redirect: '/home'
-  }
 ]
 
 const router = createRouter({
@@ -157,16 +166,43 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
+  //通过检验token的方法确认有没有登录。
+  //但有token是必要条件，而非充要条件，因为也有可能是个无效token，但这无所谓，无效token会在自动登录环节返回401由拦截器跳转到登录页，这里只检查cookie就足够。
   const hasToken = getToken();
-  if(!hasToken && to.name !== 'Login'){
+  if (!hasToken && (to.name !== 'Login' && to.name !== '404')) {
+    //未登录跳转登录页
     ElMessage({
       message: '未登录',
       type: 'message',
       duration: 1500
     });
     return '/login';
-  }else if(hasToken && to.name === 'Login'){
+  } else if (hasToken && to.name === 'Login') {
+    //已登录访问登录页跳转首页
     return '/home';
+  }
+
+  //拦截不具备权限的用户访问权限页
+  if (
+    //条件：权限为super
+    store.state.user.account.role !== 'super' &&
+    //或者权限列表有相应权限
+    //存在权限列表
+    (store.state.user.account.claims instanceof Array &&
+      //存在权限要求
+      to.meta.claim !== undefined &&
+      //满足权限要求
+      !store.state.user.account.claims.includes(to.meta.claim))
+  ) {
+    //要是通不过鉴权，就返回上一级
+    const temp = to.path.split('/');
+    let redirect = "";
+    for (let i = 1; i < temp.length - 1; i++) {
+      redirect += '/';
+      redirect += temp[i];
+    }
+    if (redirect === "") redirect += '/';
+    return redirect;
   }
 });
 

@@ -17,8 +17,7 @@ export class AuthService {
     async validateUser(username: string, password: string) {
         const user = await this.usersRepository
             .createQueryBuilder('User')
-            .where("User.del = 0")
-            .andWhere("User.username = :username", { username: username })
+            .where("User.username = :username", { username: username })
             .getOne();
         if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
@@ -47,8 +46,7 @@ export class AuthService {
     async getUser(id: number) {
         const user = await this.usersRepository
             .createQueryBuilder('User')
-            .where('User.del = 0')
-            .andWhere('User.id = :id', { id: id })
+            .where('User.id = :id', { id: id })
             .getOne();
         return user;
     }
@@ -56,19 +54,17 @@ export class AuthService {
     async getClaims(rolename: string) {
         const claims = await this.rolesRepository
             .createQueryBuilder('Role')
-            .where('Role.del = 0')
-            .andWhere('Role.rolename = :rolename', { rolename: rolename })
+            .where('Role.rolename = :rolename', { rolename: rolename })
             .select(["Role.claims"])
             .getOne();
         if (claims === null) return false;
         return claims.claims;
-    }
+    } 
 
     async isExpire(id: number, signDate: number) {
         const expire = (await this.usersRepository
             .createQueryBuilder('User')
-            .where('User.del = 0')
-            .andWhere('User.id = :id', { id: id })
+            .where('User.id = :id', { id: id })
             .select(["User.expire"])
             .getOne()).expire;
         if (signDate < expire) return true;
