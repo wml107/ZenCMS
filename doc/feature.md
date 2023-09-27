@@ -77,11 +77,11 @@
 
 | 功能                                           | 状态                                            | 版本号 |
 | ---------------------------------------------- | ----------------------------------------------- | ------ |
-| Authentication-用户登录                        | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| Authorization-特定功能检查登录状态、所需要权限 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| Authorization-自动登录                         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| Authorization-退出登录                         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 密码修改                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| Authentication-用户登录                        | ![](https://img.shields.io/badge/已完成-793FDF) |        |
+| Authorization-特定功能检查登录状态、所需要权限 | ![](https://img.shields.io/badge/已完成-793FDF) |        |
+| Authorization-自动登录                         | ![](https://img.shields.io/badge/已完成-793FDF) |        |
+| Authorization-退出登录                         | ![](https://img.shields.io/badge/已完成-793FDF) |        |
+| 密码修改                                       | ![](https://img.shields.io/badge/已完成-793FDF) |        |
 | 获取角色列表                                   | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
 | 新增角色                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
 | 编辑角色                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
