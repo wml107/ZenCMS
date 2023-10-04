@@ -235,6 +235,17 @@
 
 代码执行流程：调用service层在数据库读(service)→返回读取结果(controller)。
 
+#### 新增用户 | /user/createUser
+
+功能：新增用户。
+
+边界情况：
+
+- 用户权限不能为super。
+- 不能和已经存在了的名称冲突。
+
+代码执行流程：调用service层在数据库增(service)→返回成功信息(controller)。
+
 #### 删除指定用户 | /user/delUser
 
 功能：删除指定名称用户。

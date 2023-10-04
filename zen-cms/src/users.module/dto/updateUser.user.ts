@@ -11,14 +11,11 @@ export class UpdateUserUserDto{
     username: string
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
     password: string
 
-    @IsString()
-    @IsNotEmpty()
-    @NotEquals(0)
     @IsInt()
+    @NotEquals(0)
     @Min(1)
     @IsOptional()
     role: number

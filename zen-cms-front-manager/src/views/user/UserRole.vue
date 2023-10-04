@@ -2,8 +2,7 @@
     <div id="role">
         <div id="role-operation">
             <el-button @click="refreshRole" :loading="refreshRoleBtnLock">刷新</el-button>
-            <el-button v-if="user.account.role === 0" @click="createRoleVisible = true"
-                :loading="refreshRoleBtnLock">添加角色</el-button>
+            <el-button v-if="user.account.role === 0" @click="createRoleVisible = true">添加角色</el-button>
         </div>
         <el-table class="role-list" :data="role" stripe flexible>
             <el-table-column fixed prop="id" label="id" />
@@ -30,7 +29,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="onCreateRole">
+                    <el-button type="primary" @click="onCreateRole" :loading="createRoleBtnLock">
                         确认
                     </el-button>
                 </span>
@@ -50,7 +49,7 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="onUpdateRole(updateRoleInput.updateNow)">
+                    <el-button type="primary" @click="onUpdateRole(updateRoleInput.updateNow)" :loading="updateRoleBtnLock">
                         确认
                     </el-button>
                 </span>
@@ -62,7 +61,6 @@
 import { ElMessage } from 'element-plus';
 import { mapState, mapActions } from 'vuex';
 import claims from '../../constants/claims';
-import { ro } from 'element-plus/es/locale';
 export default {
     name: "UserRole",
     data() {
@@ -81,6 +79,7 @@ export default {
             updateRoleInput: {
                 rolename: "",
                 claims: [],
+                //此项用于标记所修改的到底是哪一条
                 updateNow: ""
             }
         }

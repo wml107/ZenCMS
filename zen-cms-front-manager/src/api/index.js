@@ -19,7 +19,7 @@ axios.interceptors.response.use(function (response) {
     if (!(error.response.data instanceof Object)) {
         ElMessage({
             message: '服务器内部错误，请联系系统管理员。',
-            type: 'info',
+            type: 'error',
             duration: 1500
         });
     } else {
@@ -30,7 +30,7 @@ axios.interceptors.response.use(function (response) {
                 } else {
                     ElMessage({
                         message: '未登录',
-                        type: 'fail'
+                        type: 'error'
                     });
                     CookieApi.delCookie('Authorization');
                     router.push('/login');

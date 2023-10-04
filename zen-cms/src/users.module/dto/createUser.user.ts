@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, Min, NotEquals } from "class-validator";
+import { IsDefined, IsInt, IsNotEmpty, IsString, Min, NotEquals } from "class-validator";
 
 export class CreateUserUserDto{
     @IsString()
@@ -6,13 +6,12 @@ export class CreateUserUserDto{
     username: string
 
     @IsString()
-    @IsNotEmpty()
+    @IsDefined()
     password: string
 
-    @IsString()
+    @IsInt()
     @IsNotEmpty()
     @NotEquals(0)
-    @IsInt()
     @Min(1)
     role: number
 }

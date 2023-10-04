@@ -82,22 +82,15 @@ const moduleUser = {
         },
         async listUser(context) {
             const res = await userApi.listUser();
-            if (res.statusCode === 200) {
-                for(let i=0; i<res.data.length; i++){
-                    if(res.data[i].rolename === null){
-                        res.data[i].rolename = '角色不存在(id:'+res.data[i].role+')';
-                        res.data[i].claims = '无';
-                    }
-                    if(res.data[i].role === 0){
-                        res.data[i].rolename = 'super';
-                        res.data[i].claims = "全部";
-                    }
-                    if(res.data[i].claims === ''){
-                        res.data[i].claims = '无';
-                    }
-                }
-                context.commit('setUser', res.data);
-            }
+            if (res.statusCode === 200) context.commit('setUser', res.data);
+            return res;
+        },
+        async createUser(context, {
+            username,
+            roleId,
+            password
+        }) {
+            const res = await userApi.createUser(username, password, roleId);
             return res;
         },
         async delUser(context, username) {
