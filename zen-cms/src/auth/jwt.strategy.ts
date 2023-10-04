@@ -16,11 +16,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any) {
     const temp = await this.authService.getUser(payload.id);
+    const temp2 = await this.authService.getRole(temp.role);
     let userInfo = {
       id: temp.id,
       username: temp.username,
       role: temp.role,
-      claims: temp.role === 'super' ? [] : await this.authService.getClaims(payload.role),
+      rolename: temp.role === 0 ? 'super' : (temp2 !== false ? temp2.rolename : false),
+      claims: temp.role === 0 ? [] : (temp2 !== false ? temp2.claims : false),
       signDate: payload.signDate
     }
     return userInfo;

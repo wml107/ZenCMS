@@ -22,11 +22,13 @@ export class AuthService {
         if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
             const temp = await this.getUser(result.id);
+            const temp2 = await this.getRole(temp.role);
             let userInfo = {
                 id: temp.id,
                 username: temp.username,
                 role: temp.role,
-                claims: temp.role === 'super' ? [] : await this.getClaims(temp.role)
+                rolename: temp.role === 0 ? 'super' : (temp2 !== false ? temp2.rolename : false),
+                claims: temp.role === 0 ? [] : (temp2 !== false ? temp2.claims : false)
             }
             return userInfo;
         }
@@ -51,14 +53,13 @@ export class AuthService {
         return user;
     }
 
-    async getClaims(rolename: string) {
-        const claims = await this.rolesRepository
+    async getRole(roleid: number) {
+        const role = await this.rolesRepository
             .createQueryBuilder('Role')
-            .where('Role.rolename = :rolename', { rolename: rolename })
-            .select(["Role.claims"])
+            .where('Role.id = :id', { id: roleid })
             .getOne();
-        if (claims === null) return false;
-        return claims.claims;
+        if (role === null) return false;
+        return role;
     } 
 
     async isExpire(id: number, signDate: number) {

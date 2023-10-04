@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from './role.entities';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -10,7 +11,7 @@ export class User {
   @Column()
   password: string;
   @Column()
-  role: string;
+  role: number;
   @Column({
     type: 'int',
     default: 0

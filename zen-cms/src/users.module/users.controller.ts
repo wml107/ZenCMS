@@ -48,31 +48,33 @@ export class UsersController {
     @Get('listRole')
     @UserR()
     async listRole(){
-        return this.usersService.listRole();
+        const res = await this.usersService.listRole();
+        return generateResponse(ResponseCode.OK, "", res);
     }
 
     @Post('createRole')
     @UserW()    
     async createRole(@Body() createRoleUserDto: CreateRoleUserDto){
-        return this.usersService.createRole(createRoleUserDto);
+        if(await this.usersService.createRole(createRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('updateRole')
     @UserW()
     async updateRole(@Body() updateRoleUserDto: UpdateRoleUserDto){
-        return this.usersService.updateRole(updateRoleUserDto);
+        if(await this.usersService.updateRole(updateRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('delRole')
     @UserW()
     async delRole(@Body() delRoleUserDto: DelRoleUserDto){
-        return this.usersService.delRole(delRoleUserDto);
+        if(await this.usersService.delRole(delRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Get('listUser')
     @UserR()
     async listUser(){
-        return this.usersService.listUser();
+        const res = await this.usersService.listUser();
+        return generateResponse(ResponseCode.OK, "", res);
     }
 
     @Post('createUser')
@@ -90,6 +92,6 @@ export class UsersController {
     @Post('delUser')
     @UserW()
     async delUser(@Body() delUserUserDto: DelUserUserDto){
-        return this.usersService.delUser(delUserUserDto);
+        if(await this.usersService.delUser(delUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 }

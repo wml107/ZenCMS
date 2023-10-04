@@ -185,7 +185,7 @@ router.beforeEach(async (to, from) => {
   //拦截不具备权限的用户访问权限页
   if (
     //条件：权限为super
-    store.state.user.account.role !== 'super' &&
+    store.state.user.account.role !== 0 &&
     //或者权限列表有相应权限
     //存在权限列表
     (store.state.user.account.claims instanceof Array &&

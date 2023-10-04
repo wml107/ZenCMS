@@ -3,9 +3,9 @@
         <el-descriptions title="账户信息" column="2" border="{{ true }}">
             <el-descriptions-item label="用户名">{{ user.account.username }}</el-descriptions-item>
             <el-descriptions-item label="id">{{ user.account.id }}</el-descriptions-item>
-            <el-descriptions-item label="角色">{{ user.account.role }}</el-descriptions-item>
+            <el-descriptions-item label="角色">{{ user.account.rolename }}</el-descriptions-item>
             <el-descriptions-item label="权限">
-                <template v-if="user.account.role==='super'">全部</template>
+                <template v-if="user.account.role===0">全部</template>
                 <template v-else v-for="item in user.account.claims">{{ item }}</template>
             </el-descriptions-item>
         </el-descriptions>

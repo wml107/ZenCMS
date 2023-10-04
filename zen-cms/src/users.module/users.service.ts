@@ -38,7 +38,7 @@ export class UsersService {
             await userRepository.insert({
                 username: rootUsername,
                 password: await bcrypt.hash(rootPassword, 10),
-                role: "super"
+                role: 0
             });
         }
     }
@@ -66,8 +66,7 @@ export class UsersService {
         const res = await this.roleRepository
             .createQueryBuilder('Role')
             .getMany();
-
-        return generateResponse(ResponseCode.OK, "", res);
+        return res;
     }
 
     async createRole(createRoleUserDto: CreateRoleUserDto) {
@@ -82,7 +81,7 @@ export class UsersService {
                     throw new HttpException("name already exists", ResponseCode.EXISTED_NAME_FAIL);
             }
         }
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 
     async updateRole(updateRoleUserDto: UpdateRoleUserDto) {
@@ -90,11 +89,18 @@ export class UsersService {
         for (let k of Object.keys(updateRoleUserDto)) {
             if (k !== "oldRolename") updateObj[k] = updateRoleUserDto[k];
         }
-        await this.roleRepository.update(
-            { rolename: updateRoleUserDto.oldRolename },
-            updateObj
-        );
-        return generateResponse(ResponseCode.OK, "", null);
+        try {
+            await this.roleRepository.update(
+                { rolename: updateRoleUserDto.oldRolename },
+                updateObj
+            );
+        } catch (err) {
+            switch (err.errno) {
+                case 19:
+                    throw new HttpException("name already exists", ResponseCode.EXISTED_NAME_FAIL);
+            }
+        }
+        return true;;
     }
 
     async delRole(delRoleUserDto: DelRoleUserDto) {
@@ -109,15 +115,13 @@ export class UsersService {
             rolename: delRoleUserDto.rolename
         });
 
-        return generateResponse(ResponseCode.OK, "", null)
+        return true;
     }
 
     async listUser() {
-        const res = await this.userRepository
-            .createQueryBuilder('User')
-            .getMany();
-
-        return generateResponse(ResponseCode.OK, "", res);
+        // typeOrm太难用了，实现联表查询要在实体定义处写ManyToOne注解，但就是过不了编译器、报错。github、StackOverflow里也看了讨论，都没能解决问题。所以干脆用原生。
+        const res = await getConnection().query("SELECT u.id, u.username, u.role, u.expire, r.rolename, r.claims FROM User u LEFT OUTER JOIN Role r ON u.role=r.id");
+        return res;
     }
 
     //需要确保不污染super权限以及超管/根用户，对于创建、修改用户的操作，在参数校验上杜绝super权限扩散；对于删除用户操作，要防止根用户被删除。
@@ -194,6 +198,6 @@ export class UsersService {
                 .andWhere("User.role != 'super'")
                 .getMany()
         );
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 }

@@ -37,13 +37,13 @@ export default {
                 ElMessage({
                     message: '账号或密码错误',
                     type: 'error',
-                    duration: 1500
+                    duration: 1000
                 });
             } else if (res.statusCode === 200) {
                 ElMessage({
                     message: '登录成功',
                     type: 'success',
-                    duration: 1500
+                    duration: 500
                 });
                 this.$router.push('/home');
             } else {
