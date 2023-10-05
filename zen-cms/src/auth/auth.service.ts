@@ -19,6 +19,8 @@ export class AuthService {
             .createQueryBuilder('User')
             .where("User.username = :username", { username: username })
             .getOne();
+            console.log("-------------------")
+            console.log(password)
         if (user && await bcrypt.compare(password, user.password)) {
             const { password, ...result } = user;
             const temp = await this.getUser(result.id);

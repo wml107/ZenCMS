@@ -1,4 +1,3 @@
-import user from '../api/user';
 import userApi from '../api/user';
 
 const moduleUser = {
@@ -53,7 +52,7 @@ const moduleUser = {
             return res;
         },
         async updatePassword(context, newPassword) {
-            const res = await userApi.updatePassword(newPassword);
+            const res = await userApi.passwordUpdate(newPassword);
             return res;
         },
         async listRole(context) {
@@ -91,6 +90,10 @@ const moduleUser = {
             password
         }) {
             const res = await userApi.createUser(username, password, roleId);
+            return res;
+        },
+        async updateUser(context, updateData) {
+            const res = await userApi.updateUser(updateData);
             return res;
         },
         async delUser(context, username) {

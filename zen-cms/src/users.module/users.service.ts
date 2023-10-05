@@ -139,7 +139,7 @@ export class UsersService {
                     throw new HttpException("name already exists", ResponseCode.EXISTED_NAME_FAIL);
             }
         }
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 
     async updateUser(updateUserUserDto: UpdateUserUserDto) {
@@ -168,7 +168,7 @@ export class UsersService {
                     await this.userRepository
                         .createQueryBuilder('User')
                         .where('User.username = :username', { username: updateUserUserDto.oldUsername })
-                        .andWhere("User.role != 'super'")
+                        .andWhere("User.role != 0")
                         .getOne(),
                     updateObj
                 );
@@ -183,11 +183,13 @@ export class UsersService {
 
             await queryRunner.commitTransaction();
         } catch (err) {
-            console.log(err)
             await queryRunner.rollbackTransaction();
+            switch (err.errno) {
+                case 19:
+                    throw new HttpException("name already exists", ResponseCode.EXISTED_NAME_FAIL);
+            }
         }
-
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 
     async delUser(delUserUserDto: DelUserUserDto) {

@@ -7,7 +7,7 @@
         <el-table class="user-list" :data="transformedUser" stripe flexible>
             <el-table-column fixed prop="id" label="id" />
             <el-table-column prop="username" label="用户名" />
-            <el-table-column prop="expire" label="上次登录时间" />
+            <el-table-column prop="expire" label="上次登录时间" min-width="150" />
             <el-table-column label="角色">
                 <template #default="scope">
                     <el-popover placement="left-start" title="权限" effect="dark" trigger="hover" :content="scope.row.claims">
@@ -17,9 +17,11 @@
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" #default="scope">
-                <!-- <el-button v-if="user.account.role === 0" size="small"
-                    @click="showUpdateRoleInput(scope.$index)">编辑</el-button> -->
+            <el-table-column label="操作" #default="scope" min-width="175">
+                <el-button v-if="user.account.role === 0" size="small"
+                    @click="showUpdateUserInput(scope.$index)">编辑</el-button>
+                <el-button v-if="user.account.role === 0" size="small"
+                    @click="showUpdatePasswordInput(scope.$index)">修改密码</el-button>
                 <el-button v-if="user.account.role === 0" size="small" type="danger" :loading="delUserBtnLock"
                     @click="onDelUser(scope.$index)">删除</el-button>
             </el-table-column>
@@ -34,7 +36,8 @@
                 </el-form-item>
                 <el-form-item label="角色">
                     <el-select v-model="createUserInput.roleId">
-                        <el-option v-for="item in roleOptions" :key="item.id" :label="item.rolename" :value="item.id" />
+                        <el-option v-for="item in roleOptionsForCreate" :key="item.id" :label="item.rolename"
+                            :value="item.id" />
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -46,26 +49,40 @@
                 </span>
             </template>
         </el-dialog>
-        <!-- <el-dialog v-model="updateRoleVisible" title="编辑角色">
+        <el-dialog v-model="updateUserVisible" title="编辑用户">
             <el-form>
-                <el-form-item label="角色名">
-                    <el-input v-model="updateRoleInput.rolename" autocomplete="off" />
+                <el-form-item label="用户名">
+                    <el-input v-model="updateUserInput.username" autocomplete="off" />
                 </el-form-item>
-                <el-form-item label="权限">
-                    <el-select v-model="updateRoleInput.claims" multiple placeholder="无">
-                        <el-option v-for="item in claimOptions" :key="item.name" :label="item.name + ' | ' + item.comment"
-                            :value="item.name" />
+                <el-form-item label="角色" v-if="updateUserInput.roleId !== 0">
+                    <el-select v-model="updateUserInput.roleId">
+                        <el-option v-for="item in user.role" :key="item.id" :label="item.rolename" :value="item.id" />
                     </el-select>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="onUpdateRole(updateRoleInput.updateNow)">
+                    <el-button type="primary" @click="onUpdateUser(updateUserInput.updateNow)" :loading="updateUserBtnLock">
                         确认
                     </el-button>
                 </span>
             </template>
-        </el-dialog> -->
+        </el-dialog>
+        <el-dialog v-model="updatePasswordVisible" title="修改密码">
+            <el-form>
+                <el-form-item label="新密码">
+                    <el-input type="password" show-password v-model="updatePasswordInput.password" autocomplete="off" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="onUpdatePassword(updatePasswordInput.updateNow)"
+                        :loading="updatePasswordBtnLock">
+                        确认
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -76,8 +93,12 @@ export default {
     data() {
         return {
             createUserVisible: false,
+            updateUserVisible: false,
+            updatePasswordVisible: false,
             refreshUserBtnLock: false,
             createUserBtnLock: false,
+            updateUserBtnLock: false,
+            updatePasswordBtnLock: false,
             delUserBtnLock: false,
             createUserInput: {
                 username: "",
@@ -90,6 +111,10 @@ export default {
                 password: '',
                 //此项用于标记所修改的到底是哪一条
                 updateNow: ""
+            },
+            updatePasswordInput: {
+                password: "",
+                updateNow: ""
             }
         }
     },
@@ -97,18 +122,13 @@ export default {
         ...mapState([
             'user'
         ]),
-        roleOptions() {
-            const roleList = [{
+        roleOptionsForCreate() {
+            return [{
                 id: -1,
                 rolename: '未选择'
-            }];
-            for (let i = 0; i < this.user.role.length; i++) {
-                roleList.push({
-                    id: this.user.role[i].id,
-                    rolename: this.user.role[i].rolename
-                });
-            }
-            return roleList;
+            },
+            ...this.user.role
+            ];
         },
         transformedUser() {
             const _user = [];
@@ -132,16 +152,32 @@ export default {
     },
     methods: {
         createUserInputReset() {
-            this.createRoleInput = {
+            this.createUserInput = {
                 username: '',
-                role: -1,
+                roleId: -1,
                 password: ''
             };
+        },
+        showUpdateUserInput(index) {
+            this.updateUserInput = {
+                username: this.user.user[index].username,
+                roleId: this.user.user[index].role,
+                updateNow: index,
+            };
+            this.updateUserVisible = true;
+        },
+        showUpdatePasswordInput(index) {
+            this.updatePasswordInput = {
+                password: "",
+                updateNow: index
+            }
+            this.updatePasswordVisible = true;
         },
         ...mapActions([
             'listRole',
             'listUser',
             'createUser',
+            'updateUser',
             'delUser'
         ]),
         async refreshUser() {
@@ -156,6 +192,15 @@ export default {
             if (this.createUserInput.username === '') {
                 ElMessage({
                     message: '用户名不能为空',
+                    type: 'error',
+                    duration: 1500
+                });
+                this.createUserBtnLock = false;
+                return;
+            }
+            if (this.createUserInput.password === '') {
+                ElMessage({
+                    message: '密码不能为空',
                     type: 'error',
                     duration: 1500
                 });
@@ -192,6 +237,65 @@ export default {
                     duration: 1000
                 });
                 this.createUserVisible = false;
+            }
+        },
+        async onUpdateUser(index) {
+            //按钮防抖
+            this.updateUserBtnLock = true;
+            //参数校验
+            if (this.updateUserInput.username === '') {
+                ElMessage({
+                    message: '用户名不能为空',
+                    type: 'error',
+                    duration: 1500
+                });
+                this.updateUserBtnLock = false;
+                return;
+            }
+            //调用数据层
+            let updateData = {
+                oldUsername: this.user.user[index].username,
+                username: this.updateUserInput.username
+            };
+            if (this.updateUserInput.roleId !== 0) updateData = Object.assign(updateData, { role: this.updateUserInput.roleId });
+            const res = await this.updateUser(updateData);
+            this.updateUserBtnLock = false;
+            //结果回显
+            if (res.statusCode === 200) {
+                this.listUser();
+                ElMessage({
+                    message: '修改成功',
+                    type: 'success',
+                    duration: 1000
+                });
+                this.updateUserVisible = false;
+            }
+        },
+        async onUpdatePassword(index) {
+            //按钮防抖
+            this.updatePasswordBtnLock = true;
+            //参数校验
+            if (this.updatePasswordInput.password === '') {
+                ElMessage({
+                    message: '密码不能为空',
+                    type: 'error',
+                    duration: 1000
+                });
+                this.updatePasswordBtnLock = false;
+                return;
+            }
+            //调用数据层
+            const res = await this.updateUser({ oldUsername: this.user.user[index].username, password: this.updatePasswordInput.password });
+            this.updatePasswordBtnLock = false;
+            //结果回显
+            if (res.statusCode === 200) {
+                this.listUser();
+                ElMessage({
+                    message: '修改成功',
+                    type: 'success',
+                    duration: 1000
+                });
+                this.updatePasswordVisible = false;
             }
         },
         async onDelUser(index) {

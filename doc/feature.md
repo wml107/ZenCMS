@@ -88,6 +88,6 @@
 | 删除角色                                       | ![](https://img.shields.io/badge/已完成-793FDF) |        |
 | 获取用户列表                                   | ![](https://img.shields.io/badge/已完成-793FDF) |        |
 | 新增用户                                       | ![](https://img.shields.io/badge/已完成-793FDF) |        |
-| 编辑用户                                       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑用户                                       | ![](https://img.shields.io/badge/已完成-793FDF) |        |
 | 删除用户                                       | ![](https://img.shields.io/badge/已完成-793FDF) |        |
 

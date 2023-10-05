@@ -37,7 +37,8 @@ export default {
     },
     methods: {
         ...mapActions([
-            'quit'
+            'quit',
+            'updatePassword'
         ]),
         async onQuit() {
             const res = await this.quit();
@@ -48,6 +49,31 @@ export default {
                     duration: 1500
                 });
                 this.$router.push('/login');
+            } else {
+                ElMessage({
+                    message: res.message,
+                    type: 'error',
+                    duration: 1500
+                });
+            }
+        },
+        async onUpdatePassword(){
+            if(this.newPassword === ''){
+                ElMessage({
+                    message: '密码不能为空',
+                    type: 'error',
+                    duration: 1500
+                });
+                return ;
+            }
+            const res = await this.updatePassword(this.newPassword);
+            if (res.statusCode === 200) {
+                ElMessage({
+                    message: '修改成功',
+                    type: 'success',
+                    duration: 1500
+                });
+                this.newPassword = '';
             } else {
                 ElMessage({
                     message: res.message,

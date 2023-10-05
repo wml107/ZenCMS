@@ -95,6 +95,14 @@ export default {
         });
         return res.data;
     },
+    async updateUser( updateData ){
+        const res = await axios({
+            method: 'post',
+            url: 'user/updateUser',
+            data: updateData
+        });
+        return res.data;
+    },
     async delUser(username){
         const res = await axios({
             method: 'post',

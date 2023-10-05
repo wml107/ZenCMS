@@ -80,13 +80,13 @@ export class UsersController {
     @Post('createUser')
     @UserW()
     async createUser(@Body() createUserUserDto: CreateUserUserDto){
-        return this.usersService.createUser(createUserUserDto);
+        if(await this.usersService.createUser(createUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('updateUser')
     @UserW()
     async updateUser(@Body() updateUserUserDto: UpdateUserUserDto){
-        return this.usersService.updateUser(updateUserUserDto);
+        if(await this.usersService.updateUser(updateUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('delUser')

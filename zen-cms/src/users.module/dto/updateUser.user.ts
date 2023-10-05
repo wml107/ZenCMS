@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString, Min, NotEquals } from "class-validator"
+import { IsDefined, IsInt, IsNotEmpty, IsOptional, IsString, Min, NotEquals } from "class-validator"
 
 export class UpdateUserUserDto{
     @IsString()
@@ -11,6 +11,7 @@ export class UpdateUserUserDto{
     username: string
 
     @IsString()
+    @IsDefined()
     @IsOptional()
     password: string
 
