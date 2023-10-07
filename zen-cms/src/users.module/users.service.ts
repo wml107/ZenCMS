@@ -34,7 +34,10 @@ export class UsersService {
         const hasRoot = await userRepository.createQueryBuilder("User").getMany();
         if (hasRoot.length === 0) {
             const rootUsername = require('readline-sync').question("初始化超级管理员用户名：");
-            const rootPassword = require('readline-sync').question("初始化超级管理员密码：");
+            let rootPassword = require('readline-sync').question("初始化超级管理员密码(不能为空)：");
+            while(rootPassword===''){
+                rootPassword = require('readline-sync').question("密码不能为空，请重新输入：");
+            }
             await userRepository.insert({
                 username: rootUsername,
                 password: await bcrypt.hash(rootPassword, 10),

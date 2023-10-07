@@ -6,7 +6,10 @@ import { join } from 'path';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
+  console.log("----------通过组合键Ctrl+C关闭应用----------");
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  //cookie处理中间件
   app.use(cookieParser());
   //配置前端网页
   app.useStaticAssets(join(__dirname, '../..', 'static'));

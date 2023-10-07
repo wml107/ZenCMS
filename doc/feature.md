@@ -1,21 +1,23 @@
 **资源管理**
 
-| 功能               | 状态                                            | 版本号 |
-| ------------------ | ----------------------------------------------- | ------ |
-| 获取资源内容       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 获取目录下资源列表 | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 下载资源           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 创建文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 创建目录           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 编辑文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 重命名文件         | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 删除文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 恢复文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 拷贝文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 剪切文件           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 文件上传           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 系统数据导出       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
-| 系统数据导入       | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 功能                   | 状态                                            | 版本号 |
+| ---------------------- | ----------------------------------------------- | ------ |
+| 获取资源内容           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 获取目录下资源列表     | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 下载资源               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 创建文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 创建目录               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 编辑文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 重命名文件             | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 删除文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 恢复文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 拷贝文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 剪切文件               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 文件上传               | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 系统数据导出           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 系统数据导入           | ![](https://img.shields.io/badge/开发中-FF9B50) |        |
+| 撤销上一步操作         | ![](https://img.shields.io/badge/规划中-7D7C7C) |        |
+| 重做上一步被撤销的操作 | ![](https://img.shields.io/badge/规划中-7D7C7C) |        |
 
 **内容组织结构管理**
 

@@ -20,7 +20,8 @@ import { UploadResourceDto } from './dto/upload.resource';
 import { ImportResourceDto } from './dto/import.resource';
 import { SiteService } from 'src/site.module/site.service';
 import { Public, ResourceR, ResourceW } from 'src/auth/authorization.decorator';
-import { ResponseCode } from 'src/utils/Response';
+import { ResponseCode, generateResponse } from 'src/utils/Response';
+import { generateString } from '@nestjs/typeorm';
 const compressing = require('compressing');
 
 @Controller('resource')
@@ -31,20 +32,20 @@ export class ResourceController {
 
     @Post('get')
     @Public()
-    get(@Body() getResourceDto: GetResourceDto) {
+    async get(@Body() getResourceDto: GetResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
             pkgJson.dataPath + '/resource/content/',
             pkgJson.dataPath + '/resource/content/' + getResourceDto.path)
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //没有校验请求的路径到底是文件还是文件夹，但这没有任何影响：请求文件夹返回空，要是不存在文件夹会返回路径无效；客户端是可信的，不会发出这种请求；其他来源的请求也不会对服务端造成任何影响。
-
-        return this.resourceService.get(getResourceDto);
+        const res = await this.resourceService.get(getResourceDto);
+        return generateResponse(ResponseCode.OK, "", res);
     }
 
     @Post('list')
     @ResourceR()
-    list(@Body() listResourceDto: ListResourceDto) {
+    async list(@Body() listResourceDto: ListResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (listResourceDto.resourceType !== 'bin' && listResourceDto.resourceType !== 'htmlPlugin' && !pathAuthorityValidation(
             pkgJson.dataPath + '/resource/' + listResourceDto.resourceType + "/",
@@ -52,8 +53,8 @@ export class ResourceController {
             true
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //没有校验请求的路径到底是文件还是文件夹，但这没有任何影响：请求文件返回空；客户端是可信的，不会发出这种请求；其他来源的请求也不会对服务端造成任何影响。
-
-        return this.resourceService.list(listResourceDto);
+        const res = await this.resourceService.list(listResourceDto);
+        return generateResponse(ResponseCode.OK, "", res);
     }
 
     @Post('download')
@@ -71,7 +72,7 @@ export class ResourceController {
         //  2.就算是在回调处理错误，他提供的异常对象err，也不是常规的Error对象，而是一些莫名其妙的字符串(name, message, stack)，并且对于不同类型的错误，这个错误对象还大不相同。
         //这就意味着你根本没办法根据错误码来检测错误，错误处理完全不可控，没办法在回调处理。
         //在回调抛出来也是无法实现的，根本抛不出来，经测试发现这种做法没反应。
-        //所以就只能尽可能预料到各种错误，然后在调用这个方法之前检查这些情形，至于其他的错误，不做任何处理、不写回调。因为似乎express和nest之间有一种内部的机制，express的这个方法出错，再没有回调的情况下，nest是能检测到的，并且会返回给客户端一个简单的错误信息。
+        //所以就只能尽可能预料到各种错误，然后在调用这个方法之前检查这些情形，至于其他的错误，不做任何处理、不写回调。因为似乎express和nest之间有一种内部的机制，express的这个方法出错，在没有回调的情况下，nest是能检测到的，并且会返回给客户端一个简单的错误信息。
 
         //判断路径是否存在
         if (!existsSync(pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path)) throw new HttpException('cannot find resource', HttpStatus.NOT_FOUND);
@@ -86,7 +87,13 @@ export class ResourceController {
     @ResourceW()
     @UseInterceptors(FilesInterceptor('file'))
     upload(@UploadedFiles() file: Express.Multer.File[], @Body() uploadResourceDto: UploadResourceDto) {
-        return this.resourceService.upload(file, uploadResourceDto);
+        //用于额外校验路径是否合法，详见方法中注释
+        if (!pathAuthorityValidation(
+            pkgJson.dataPath + "/resource/" + uploadResourceDto.resourceType + "/",
+            pkgJson.dataPath + "/resource/" + uploadResourceDto.resourceType + "/" + uploadResourceDto.path
+        )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
+
+        if(this.resourceService.upload(file, uploadResourceDto))return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('createFile')
@@ -138,7 +145,7 @@ export class ResourceController {
             pkgJson.dataPath + "/resource/" + renameResourceDto.resourceType + "/" + renameResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
-        return this.resourceService.rename(renameResourceDto);
+        if(this.resourceService.rename(renameResourceDto))return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('copy')
@@ -178,7 +185,7 @@ export class ResourceController {
             pkgJson.dataPath + deleteResourceDto.type === 'bin' ? "/resource/" : "/bin/" + deleteResourceDto.resourceType + "/" + deleteResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
-        return this.resourceService.delete(deleteResourceDto);
+        if(this.resourceService.delete(deleteResourceDto))return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('recovery')
@@ -211,6 +218,7 @@ export class ResourceController {
         //校验确保目标导入路径可达或为空
         if (!existsSync(importResourceDto.targetPath) && importResourceDto.targetPath !== "") throw new HttpException('path does not exist', ResponseCode.BAD_PATH);
         await this.resourceService.import(data, importResourceDto);
-        return SiteService.refreshAllCache();
+        SiteService.refreshAllCache();
+        return generateResponse(ResponseCode.OK, '', null);
     }
 }

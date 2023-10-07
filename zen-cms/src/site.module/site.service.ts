@@ -39,6 +39,6 @@ export class SiteService {
         StructureService.updateTagCache();
         StructureService.updateStructureTreeCache();
         SiteService.updateSiteCache();
-        return generateResponse(ResponseCode.OK, "", null);
+        return true;
     }
 }

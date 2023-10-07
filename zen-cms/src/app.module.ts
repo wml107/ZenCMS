@@ -40,11 +40,11 @@ import { LogErrorFilter } from './filter/logError.filter';
         'htmlPlugin',
       ]
     }),
+    SiteModule,
     AuthModule,
     UsersModule,
     ResourceModule,
     StructureModule,
-    SiteModule,
     PostModule,
     LogModule
   ],

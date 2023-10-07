@@ -6,7 +6,6 @@ import { CreatePostDto } from "./dto/create.post";
 import { DeletePostDto } from "./dto/delete.post";
 import { UpdatePostDto } from "./dto/update.post";
 import { ListPostDto } from "./dto/list.post";
-import { ResponseCode, generateResponse } from "src/utils/Response";
 
 @Injectable()
 export class PostService {
@@ -33,12 +32,12 @@ export class PostService {
 
     this.view(res);
 
-    return generateResponse(ResponseCode.OK, "", res);
+    return res;
   }
 
   async create(createPostDto: CreatePostDto) {
     await this.postRepository.save(createPostDto);
-    return generateResponse(ResponseCode.OK, "", null);
+    return true;
   }
 
   async delete(deletePostDto: DeletePostDto) {
@@ -48,14 +47,12 @@ export class PostService {
       .set({ del: 1 })
       .where("id =:id", { id: deletePostDto.id })
       .execute();
-    return generateResponse(ResponseCode.OK, "", {
-      affected: res.affected
-    });
+    return true;
   }
 
   async update(updatePostDto: UpdatePostDto) {
     await this.postRepository.save(updatePostDto);
-    return generateResponse(ResponseCode.OK, "", null);
+    return true;
   }
 
   view(res: Post[]) {

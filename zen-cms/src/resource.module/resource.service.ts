@@ -51,7 +51,7 @@ export class ResourceService {
         try {
           const content = fs.readFileSync(pkgJson.dataPath + '/resource/content/' + getResourceDto.path);
           this.viewContent(pkgJson.dataPath + '/resource/content/' + getResourceDto.path);
-          return generateResponse(ResponseCode.OK, "", content);
+          return content;
         } catch (err) {
           switch (err.errno) {
             case -4058: throw new HttpException("path does not exist", ResponseCode.BAD_PATH);
@@ -65,12 +65,12 @@ export class ResourceService {
     try {
       if (listResourceDto.resourceType === 'bin') {
         const dir = JSON.parse(readFileSync(pkgJson.dataPath + "/bin/" + listResourceDto.binType + "/_catalog.json", "utf-8")).list;
-        return generateResponse(ResponseCode.OK, "", dir);
+        return dir;
       } else if (listResourceDto.resourceType === 'htmlPlugin') {
-        return generateResponse(ResponseCode.OK, "", ResourceService.htmlPluginList);
+        return ResourceService.htmlPluginList;
       } else {
         const dir = fs.readdirSync(pkgJson.dataPath + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path, 'utf-8');
-        return generateResponse(ResponseCode.OK, "", dir);
+        return dir;
       }
     } catch (err) {
       switch (err.errno) {
@@ -99,7 +99,7 @@ export class ResourceService {
       throw err;
     }
 
-    return generateResponse(ResponseCode.OK, "", null);
+    return true;
   }
 
   createFile(createFileResourceDto: CreateFileResourceDto) {
@@ -185,7 +185,7 @@ export class ResourceService {
       throw err;
     }
 
-    return 'succ';
+    return true;
   }
 
   copy(copyResourceDto: CopyResourceDto) {
@@ -288,7 +288,7 @@ export class ResourceService {
       }
     }
 
-    return generateResponse(ResponseCode.OK, "", null);
+    return true;
   }
 
   recovery(recoveryResourceDto: RecoveryResourceDto) {
@@ -349,7 +349,7 @@ export class ResourceService {
       pkgJson.dataPath = normalize(importResourceDto.targetPath + "/data");
       writeFileSync(normalize(__dirname + "/../../../package.json"), JSON.stringify(pkgJson));
     }
-    return generateResponse(ResponseCode.OK, "", null);
+    return true;
   }
 
   private viewContent(contentPath: string): void {
@@ -411,6 +411,9 @@ export class ResourceService {
         if (choice === 'y' || choice === 'Y') {
           unlinkSync(pkgJson.dataPath);
           mkdirSync(pkgJson.dataPath);
+        }else{
+          console.log("应用已关闭。");
+          process.exit(0);
         }
       }
       writeFileSync(__dirname + '../../../../package.json', JSON.stringify(pkgJson));
@@ -423,6 +426,9 @@ export class ResourceService {
       if (choice === 'y' || choice === 'Y') {
         unlinkSync(pkgJson.dataPath);
         mkdirSync(pkgJson.dataPath);
+      }else{
+        console.log("应用已关闭。");
+        process.exit(0);
       }
       console.log("应用已关闭，请重启应用。");
       process.exit(0);

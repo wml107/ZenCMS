@@ -5,6 +5,7 @@ import { ListPostDto } from './dto/list.post';
 import { DeletePostDto } from './dto/delete.post';
 import { UpdatePostDto } from './dto/update.post';
 import { PostW, Public } from 'src/auth/authorization.decorator';
+import { ResponseCode, generateResponse } from 'src/utils/Response';
 
 @Controller('post')
 export class PostController {
@@ -12,24 +13,25 @@ export class PostController {
 
     @Post('list')
     @Public()
-    list(@Body() listPostDto: ListPostDto) {
-        return this.postService.list(listPostDto);
+    async list(@Body() listPostDto: ListPostDto) {
+        const res = await this.postService.list(listPostDto);
+        return generateResponse(ResponseCode.OK, "", res);
     }
 
     @Post('create')
     @PostW()
-    add(@Body() createPostDto: CreatePostDto) {
-        return this.postService.create(createPostDto);
+    async add(@Body() createPostDto: CreatePostDto) {
+        if(await this.postService.create(createPostDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
     @Post('delete')
     @PostW()
-    delete(@Body() deletePostDto: DeletePostDto) {
-        return this.postService.delete(deletePostDto);
+    async delete(@Body() deletePostDto: DeletePostDto) {
+        if(await this.postService.delete(deletePostDto)) return generateResponse(ResponseCode.OK, "", null);
     }
     @Post('update')
     @PostW()
-    update(@Body() updatePostDto: UpdatePostDto) {
-        return this.postService.update(updatePostDto);
+    async update(@Body() updatePostDto: UpdatePostDto) {
+        if(await this.postService.update(updatePostDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 }
