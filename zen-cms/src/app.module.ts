@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from '@hapi/joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './post.module/post.module';
 import { ValidationPipe } from './pipes/validate.pipe';
@@ -11,7 +13,7 @@ import pkgJson from "../package.json";
 import { SiteModule } from './site.module/site.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users.module/users.module';
-import { JwtAuthGard } from './auth/jwtAuth.gard';
+import { JwtAuthGuard } from './auth/jwtAuth.guard';
 import { User } from './users.module/entities/user.entities';
 import { Role } from './users.module/entities/role.entities';
 import { Post } from './post.module/entities/post.entities';
@@ -23,6 +25,15 @@ import { LogErrorFilter } from './filter/logError.filter';
 
 @Module({
   imports: [
+    //全局变量&用户配置
+    ConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        PORT: Joi.number().min(1).required(),
+        DATA_PATH: Joi.string().required(),
+        TOKEN_SECRET: Joi.string().required(),
+      }),
+    }),
     //配置sqlite
     TypeOrmModule.forRoot({
       type: 'sqlite',
@@ -52,7 +63,7 @@ import { LogErrorFilter } from './filter/logError.filter';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGard
+      useClass: JwtAuthGuard
     },
     {
       provide: APP_PIPE,
