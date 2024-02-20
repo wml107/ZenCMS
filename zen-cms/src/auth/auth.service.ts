@@ -44,7 +44,7 @@ export class AuthService {
         };
     }
 
-    //从token里解析出来的payload不见得都是最新的用户信息，所有有时候还要接着id去数据库查一下
+    //从token里解析出来的payload不见得都是最新的用户信息，还要用id去数据库查一下
     async getUser(id: number) {
         const user = await this.usersRepository
             .createQueryBuilder('User')

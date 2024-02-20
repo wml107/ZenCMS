@@ -7,7 +7,7 @@ import pkgJson from '../../package.json';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users.module/entities/user.entities';
 import { JwtStrategy } from './jwt.strategy';
-import { JwtAuthGard } from './jwtAuth.gard';
+import { JwtAuthGuard } from './jwtAuth.guard';
 import { Role } from 'src/users.module/entities/role.entities';
 
 @Module({ 
@@ -25,11 +25,11 @@ import { Role } from 'src/users.module/entities/role.entities';
     AuthService,
     LocalStrategy,
     JwtStrategy,
-    JwtAuthGard
+    JwtAuthGuard
   ],
   exports: [
     AuthService,
-    JwtAuthGard
+    JwtAuthGuard
   ]
 })
 export class AuthModule { }

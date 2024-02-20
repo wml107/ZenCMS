@@ -5,7 +5,7 @@ import { ExecutionContext } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 
 @Injectable()
-export class JwtAuthGard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector,
     private readonly authService: AuthService) {
     super();
