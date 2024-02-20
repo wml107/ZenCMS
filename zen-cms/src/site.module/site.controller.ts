@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Put, Post, Patch } from "@nestjs/common";
 import { SiteService } from "./site.service";
 import { UpdateDataPathSiteDto } from "./dto/updateDataPath.site";
 import { SiteR, SiteW } from "src/auth/authorization.decorator";
@@ -19,13 +19,13 @@ export class SiteController {
         return this.siteService.getDataPath();
     }
 
-    @Post('updateDataPath')
+    @Put('updateDataPath')
     @SiteW()
     updateDataPath(@Body() updateDataPathSiteDto: UpdateDataPathSiteDto) {
         return this.siteService.updateDataPath(updateDataPathSiteDto);
     }
 
-    @Get('refreshCache')
+    @Patch('refreshCache')
     @SiteW()
     refreshCache() {
         return SiteService.refreshAllCache();

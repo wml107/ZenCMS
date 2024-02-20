@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put, Delete } from "@nestjs/common";
 import { FooterSiteService } from "./footer.site.service";
 import { AddFooterSiteDto } from "./dto/add.footer.site";
 import { UpdateFooterSiteDto } from "./dto/update.footer.site";
@@ -18,13 +18,13 @@ export class FooterSiteController {
         return this.footerSiteService.add(addFooterSiteDto);
     }
 
-    @Post('update')
+    @Put('update')
     @SiteW()
     update(@Body() updateFooterSiteDto: UpdateFooterSiteDto){
         return this.footerSiteService.update(updateFooterSiteDto);
     }
 
-    @Post('del')
+    @Delete('del')
     @SiteW()
     del(@Body() delFooterSiteDto: DelFooterSiteDto){
         return this.footerSiteService.del(delFooterSiteDto);
@@ -42,6 +42,7 @@ export class FooterSiteController {
         return this.footerSiteService.addIgnore(addIgnoreFooterSiteDto);
     }
 
+    //这里是拿index作为依据来删除的，非幂等，用POST
     @Post('delIgnore')
     @SiteW()
     delIgnore(@Body() delIgnoreFooterSiteDto: DelIgnoreFooterSiteDto){

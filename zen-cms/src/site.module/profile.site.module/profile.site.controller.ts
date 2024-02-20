@@ -1,5 +1,6 @@
 
-import { ProfileSiteService } from "./profile.site.service";import { Body, Controller, Post } from "@nestjs/common";
+import { ProfileSiteService } from "./profile.site.service";
+import { Body, Controller, Post, Put, Delete } from "@nestjs/common";
 import { UpdateNicknameProfileSiteDto } from "./dto/updateNickname.profile.site";
 import { UpdateAvatarProfileSiteDto } from "./dto/updateAvatar.profile.site";
 import { AddBioProfileSiteDto } from "./dto/addBio.profile.site";
@@ -11,13 +12,13 @@ import { SiteW } from "src/auth/authorization.decorator";
 export class ProfileSiteController {
     constructor(private profileSiteService: ProfileSiteService) { }
 
-    @Post('updateNickname')
+    @Put('updateNickname')
     @SiteW()
     updateNickname(@Body() updateNicknameProfileSiteDto: UpdateNicknameProfileSiteDto) {
         return this.profileSiteService.updateNickname(updateNicknameProfileSiteDto);
     }
 
-    @Post('updateAvatar')
+    @Put('updateAvatar')
     @SiteW()
     updateAvatar(@Body() updateAvatarProfileSiteDto: UpdateAvatarProfileSiteDto){
         return this.profileSiteService.updateAvatar(updateAvatarProfileSiteDto);
@@ -29,13 +30,13 @@ export class ProfileSiteController {
         return this.profileSiteService.addBio(addBioProfileSiteDto);
     }
 
-    @Post('delBio')
+    @Delete('delBio')
     @SiteW()
     delBio(@Body() delBioProfileSiteDto: DelBioProfileSiteDto){
         return this.profileSiteService.delBio(delBioProfileSiteDto);
     }
 
-    @Post('updateBio')
+    @Put('updateBio')
     @SiteW()
     updateBio(@Body() updateBioProfileSiteDto: UpdateBioProfileSiteDto){
         return this.profileSiteService.updateBio(updateBioProfileSiteDto);

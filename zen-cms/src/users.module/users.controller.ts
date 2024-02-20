@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Request, Response, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Delete, Request, Response, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "src/auth/auth.service";
 import { Public, UserR, UserW } from "src/auth/authorization.decorator"; 
@@ -32,7 +32,7 @@ export class UsersController {
         res.send(generateResponse(ResponseCode.OK, "", req.user));
     }
 
-    @Post('updatePassword')
+    @Put('updatePassword')
     async updatePassword(@Body() updatePasswordUserDto: UpdatePasswordUserDto, @Request() req){
         //更新密码的操作顺便刷新了expire参数，所以自动让旧token失效了，所以就不必再调用userService.expire了。
         await this.usersService.updatePassword(updatePasswordUserDto, req.user.id);
@@ -58,13 +58,13 @@ export class UsersController {
         if(await this.usersService.createRole(createRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('updateRole')
+    @Put('updateRole')
     @UserW()
     async updateRole(@Body() updateRoleUserDto: UpdateRoleUserDto){
         if(await this.usersService.updateRole(updateRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('delRole')
+    @Delete('delRole')
     @UserW()
     async delRole(@Body() delRoleUserDto: DelRoleUserDto){
         if(await this.usersService.delRole(delRoleUserDto)) return generateResponse(ResponseCode.OK, "", null);
@@ -83,13 +83,13 @@ export class UsersController {
         if(await this.usersService.createUser(createUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('updateUser')
+    @Put('updateUser')
     @UserW()
     async updateUser(@Body() updateUserUserDto: UpdateUserUserDto){
         if(await this.usersService.updateUser(updateUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('delUser')
+    @Delete('delUser')
     @UserW()
     async delUser(@Body() delUserUserDto: DelUserUserDto){
         if(await this.usersService.delUser(delUserUserDto)) return generateResponse(ResponseCode.OK, "", null);
