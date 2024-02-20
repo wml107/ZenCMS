@@ -416,7 +416,7 @@ export class ResourceService {
           process.exit(0);
         }
       }
-      writeFileSync(__dirname + '../../../../package.json', JSON.stringify(pkgJson));
+      writeFileSync(__dirname + '/../../../package.json', JSON.stringify(pkgJson));
       //理论上代码走到这个位置会自动重启的，因为程序的源文件发生了改动，会触发热更新，但以防万一，这里还是进行 一下提示并手动退出。
       console.log("应用已关闭，请重启应用。");
       process.exit(0);
