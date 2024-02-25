@@ -1,10 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { readFileSync, writeFileSync } from "fs";
-import pkgJson from '../../package.json';
+import Config from "src/utils/Config";
 import { UpdateDataPathSiteDto } from "./dto/updateDataPath.site";
 import { ResourceService } from "src/resource.module/resource.service";
 import { StructureService } from "src/structure.module/structure.service";
 import { ResponseCode, generateResponse } from "src/utils/Response";
+
+const config = new Config();
+const DATA_PATH = config.getConfig('DATA_PATH');
 
 @Injectable()
 export class SiteService {
@@ -15,7 +18,7 @@ export class SiteService {
     private static siteInfo;
 
     static updateSiteCache() {
-        this.siteInfo = JSON.parse(readFileSync(pkgJson.dataPath + "/site/site.json", "utf-8"));
+        this.siteInfo = JSON.parse(readFileSync(DATA_PATH + "/site/site.json", "utf-8"));
         return this.siteInfo;
     }
 
@@ -24,12 +27,13 @@ export class SiteService {
     }
 
     getDataPath() {
-        return generateResponse(ResponseCode.OK, "", JSON.parse(readFileSync(pkgJson.dataPath + "/site/site.json", "utf-8")).dataPath);
+        return generateResponse(ResponseCode.OK, "", JSON.parse(readFileSync(DATA_PATH + "/site/site.json", "utf-8")).dataPath);
     }
 
+    //暂时还没找到写入env的方法
     updateDataPath(updateDataPathSiteDto: UpdateDataPathSiteDto) {
-        pkgJson.dataPath = updateDataPathSiteDto.dataPath;
-        writeFileSync(__dirname + '/../../../package.json', JSON.stringify(pkgJson));
+        const newPath = updateDataPathSiteDto.dataPath;
+        //写入.env
         return generateResponse(ResponseCode.OK, "", null);
     }
 

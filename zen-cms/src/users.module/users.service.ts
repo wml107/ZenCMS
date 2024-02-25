@@ -11,8 +11,11 @@ import { CreateUserUserDto } from './dto/createUser.user';
 import { UpdateUserUserDto } from './dto/updateUser.user';
 import { DelUserUserDto } from './dto/delUser.user';
 import bcrypt from 'bcryptjs';
-import pkgJson from '../../package.json';
+import Config from 'src/utils/Config';
 import { ResponseCode, generateResponse } from 'src/utils/Response';
+
+const config = new Config();
+const DATA_PATH = config.getConfig('DATA_PATH');
 
 
 @Injectable()
@@ -24,7 +27,7 @@ export class UsersService {
         UsersService.initRoot(this.userRepository);
         createConnection({
             type: 'sqlite',
-            database: pkgJson.dataPath + '/db.sql',
+            database: DATA_PATH + '/db.sql',
             entities: [User],
         });
     }

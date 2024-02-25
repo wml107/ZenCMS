@@ -3,8 +3,7 @@ import { ResourceService } from './resource.service';
 import { GetResourceDto } from './dto/get.resource';
 import { ListResourceDto } from './dto/list.resource';
 import { DownloadResourceDto } from './dto/download.resource';
-import { Response } from 'express'
-import pkgJson from "../../package.json";
+import { Response } from 'express';
 import { existsSync, rmSync, statSync } from 'fs';
 import { pathAuthorityValidation } from 'src/utils/pathAuthorityValidation';
 import { CreateFileResourceDto } from './dto/createFile.resource';
@@ -22,7 +21,12 @@ import { SiteService } from 'src/site.module/site.service';
 import { Public, ResourceR, ResourceW } from 'src/auth/authorization.decorator';
 import { ResponseCode, generateResponse } from 'src/utils/Response';
 import { generateString } from '@nestjs/typeorm';
+import Config from '../utils/Config';
+
 const compressing = require('compressing');
+
+const config = new Config();
+const DATA_PATH = config.getConfig('DATA_PATH');
 
 @Controller('resource')
 export class ResourceController {
@@ -35,8 +39,8 @@ export class ResourceController {
     async get(@Body() getResourceDto: GetResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/content/',
-            pkgJson.dataPath + '/resource/content/' + getResourceDto.path)
+            DATA_PATH + '/resource/content/',
+            DATA_PATH + '/resource/content/' + getResourceDto.path)
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //没有校验请求的路径到底是文件还是文件夹，但这没有任何影响：请求文件夹返回空，要是不存在文件夹会返回路径无效；客户端是可信的，不会发出这种请求；其他来源的请求也不会对服务端造成任何影响。
         const res = await this.resourceService.get(getResourceDto);
@@ -48,8 +52,8 @@ export class ResourceController {
     async list(@Body() listResourceDto: ListResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (listResourceDto.resourceType !== 'bin' && listResourceDto.resourceType !== 'htmlPlugin' && !pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/' + listResourceDto.resourceType + "/",
-            pkgJson.dataPath + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path,
+            DATA_PATH + '/resource/' + listResourceDto.resourceType + "/",
+            DATA_PATH + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path,
             true
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //没有校验请求的路径到底是文件还是文件夹，但这没有任何影响：请求文件返回空；客户端是可信的，不会发出这种请求；其他来源的请求也不会对服务端造成任何影响。
@@ -62,8 +66,8 @@ export class ResourceController {
     download(@Body() downloadResourceDto: DownloadResourceDto, @Res() res: Response) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/",
-            pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path
+            DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/",
+            DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
 
@@ -75,11 +79,11 @@ export class ResourceController {
         //所以就只能尽可能预料到各种错误，然后在调用这个方法之前检查这些情形，至于其他的错误，不做任何处理、不写回调。因为似乎express和nest之间有一种内部的机制，express的这个方法出错，在没有回调的情况下，nest是能检测到的，并且会返回给客户端一个简单的错误信息。
 
         //判断路径是否存在
-        if (!existsSync(pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path)) throw new HttpException('cannot find resource', HttpStatus.NOT_FOUND);
+        if (!existsSync(DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path)) throw new HttpException('cannot find resource', HttpStatus.NOT_FOUND);
         //判断是否为目录
-        if (statSync(pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path).isDirectory()) throw new HttpException('cannot download directory', HttpStatus.BAD_REQUEST);
+        if (statSync(DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path).isDirectory()) throw new HttpException('cannot download directory', HttpStatus.BAD_REQUEST);
 
-        res.download(pkgJson.dataPath + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path);
+        res.download(DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/" + downloadResourceDto.path);
     }
 
     //兼具上传与编辑功能（同名文件会被覆盖内容）
@@ -89,8 +93,8 @@ export class ResourceController {
     upload(@UploadedFiles() file: Express.Multer.File[], @Body() uploadResourceDto: UploadResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/" + uploadResourceDto.resourceType + "/",
-            pkgJson.dataPath + "/resource/" + uploadResourceDto.resourceType + "/" + uploadResourceDto.path
+            DATA_PATH + "/resource/" + uploadResourceDto.resourceType + "/",
+            DATA_PATH + "/resource/" + uploadResourceDto.resourceType + "/" + uploadResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         if(this.resourceService.upload(file, uploadResourceDto))return generateResponse(ResponseCode.OK, "", null);
@@ -101,8 +105,8 @@ export class ResourceController {
     createFile(@Body() createFileResourceDto: CreateFileResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/content",
-            pkgJson.dataPath + "/resource/content/" + createFileResourceDto.path + '/' + createFileResourceDto.fileName + '.' + createFileResourceDto.fileType
+            DATA_PATH + "/resource/content",
+            DATA_PATH + "/resource/content/" + createFileResourceDto.path + '/' + createFileResourceDto.fileName + '.' + createFileResourceDto.fileType
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //创建文件的路径应当以"/"结尾，不然路径尾部的名字会进入到文件名的一部分。直接校验过于麻烦，直接在尾部加斜杠即可，因为真正文件操作的时候多余的斜杠都会被忽略。
         createFileResourceDto.path += '/';
@@ -115,8 +119,8 @@ export class ResourceController {
     createCatalog(@Body() createCatalogResourceDto: CreateCatalogResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/" + createCatalogResourceDto.resourceType + "/",
-            pkgJson.dataPath + "/resource/" + createCatalogResourceDto.resourceType + "/" + createCatalogResourceDto.path + '/' + createCatalogResourceDto.catalogName
+            DATA_PATH + "/resource/" + createCatalogResourceDto.resourceType + "/",
+            DATA_PATH + "/resource/" + createCatalogResourceDto.resourceType + "/" + createCatalogResourceDto.path + '/' + createCatalogResourceDto.catalogName
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
         //创建文件的路径应当以"/"结尾，不然路径尾部的名字会进入到文件名的一部分。直接校验过于麻烦，直接在尾部加斜杠即可，因为真正文件操作的时候多余的斜杠都会被忽略。
         createCatalogResourceDto.path += '/';
@@ -129,8 +133,8 @@ export class ResourceController {
     update(@Body() updateResourceDto: UpdateResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/content/",
-            pkgJson.dataPath + "/resource/content/" + updateResourceDto.path
+            DATA_PATH + "/resource/content/",
+            DATA_PATH + "/resource/content/" + updateResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.resourceService.update(updateResourceDto);
@@ -141,8 +145,8 @@ export class ResourceController {
     rename(@Body() renameResourceDto: RenameResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/resource/" + renameResourceDto.resourceType + "/",
-            pkgJson.dataPath + "/resource/" + renameResourceDto.resourceType + "/" + renameResourceDto.path
+            DATA_PATH + "/resource/" + renameResourceDto.resourceType + "/",
+            DATA_PATH + "/resource/" + renameResourceDto.resourceType + "/" + renameResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         if(this.resourceService.rename(renameResourceDto))return generateResponse(ResponseCode.OK, "", null);
@@ -155,8 +159,8 @@ export class ResourceController {
         const resourceType = ['content/', 'htmlPlugin/', 'pic/', 'file/']
         let isOldPathValid = false;
         let isNewPathValid = false;
-        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(pkgJson.dataPath + "/resource/" + resourceType[i], pkgJson.dataPath + "/resource/" + copyResourceDto.oldPath)) isOldPathValid = true;
-        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(pkgJson.dataPath + "/resource/" + resourceType[i], pkgJson.dataPath + "/resource/" + copyResourceDto.newPath)) isNewPathValid = true;
+        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(DATA_PATH + "/resource/" + resourceType[i], DATA_PATH + "/resource/" + copyResourceDto.oldPath)) isOldPathValid = true;
+        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(DATA_PATH + "/resource/" + resourceType[i], DATA_PATH + "/resource/" + copyResourceDto.newPath)) isNewPathValid = true;
         if (!isOldPathValid || !isNewPathValid)  throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.resourceService.copy(copyResourceDto);
@@ -169,8 +173,8 @@ export class ResourceController {
         const resourceType = ['content/', 'htmlPlugin/', 'pic/', 'file/']
         let isOldPathValid = false;
         let isNewPathValid = false;
-        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(pkgJson.dataPath + "/resource/" + resourceType[i], pkgJson.dataPath + "/resource/" + cutResourceDto.oldPath)) isOldPathValid = true;
-        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(pkgJson.dataPath + "/resource/" + resourceType[i], pkgJson.dataPath + "/resource/" + cutResourceDto.newPath)) isNewPathValid = true;
+        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(DATA_PATH + "/resource/" + resourceType[i], DATA_PATH + "/resource/" + cutResourceDto.oldPath)) isOldPathValid = true;
+        for (let i = 0; i < resourceType.length; i++) if (pathAuthorityValidation(DATA_PATH + "/resource/" + resourceType[i], DATA_PATH + "/resource/" + cutResourceDto.newPath)) isNewPathValid = true;
         if (!isOldPathValid || !isNewPathValid)  throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.resourceService.cut(cutResourceDto);
@@ -181,8 +185,8 @@ export class ResourceController {
     delete(@Body() deleteResourceDto: DeleteResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + deleteResourceDto.type === 'bin' ? "/resource/" : "/bin/" + deleteResourceDto.resourceType + "/",
-            pkgJson.dataPath + deleteResourceDto.type === 'bin' ? "/resource/" : "/bin/" + deleteResourceDto.resourceType + "/" + deleteResourceDto.path
+            DATA_PATH + deleteResourceDto.type === 'bin' ? "/resource/" : "/bin/" + deleteResourceDto.resourceType + "/",
+            DATA_PATH + deleteResourceDto.type === 'bin' ? "/resource/" : "/bin/" + deleteResourceDto.resourceType + "/" + deleteResourceDto.path
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         if(this.resourceService.delete(deleteResourceDto))return generateResponse(ResponseCode.OK, "", null);
@@ -193,8 +197,8 @@ export class ResourceController {
     recovery(@Body() recoveryResourceDto: RecoveryResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + "/bin/" + recoveryResourceDto.resourceType + "/",
-            pkgJson.dataPath + "/bin/" + recoveryResourceDto.resourceType + "/" + recoveryResourceDto.fileName
+            DATA_PATH + "/bin/" + recoveryResourceDto.resourceType + "/",
+            DATA_PATH + "/bin/" + recoveryResourceDto.resourceType + "/" + recoveryResourceDto.fileName
         )) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.resourceService.recovery(recoveryResourceDto);
@@ -204,9 +208,9 @@ export class ResourceController {
     @ResourceR()
     async export(@Res() res: Response) {
         const tempName = "_datatemp" + Date.now() + ".zip"
-        await compressing.zip.compressDir(pkgJson.dataPath, pkgJson.dataPath + "/../" + tempName);
-        res.download(pkgJson.dataPath + "/../" + tempName, "data.zip", function (err) {
-            rmSync(pkgJson.dataPath + "/../" + tempName);
+        await compressing.zip.compressDir(DATA_PATH, DATA_PATH + "/../" + tempName);
+        res.download(DATA_PATH + "/../" + tempName, "data.zip", function (err) {
+            rmSync(DATA_PATH + "/../" + tempName);
             if (err) throw err;
         });
     }

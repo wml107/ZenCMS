@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import pkgJson from "../../package.json";
+import Config from "../utils/Config";
 import { existsSync, readFileSync, statSync, unlink, unlinkSync, writeFileSync } from "fs";
 import { AddTagStructureDto } from "./dto/addTag.structure";
 import { DelTagStructureDto } from "./dto/delTag.structure";
@@ -13,6 +13,9 @@ import { UpdateNodeStructureDto } from "./dto/updateNode.structure";
 import { GetNodesByTagStructureDto } from "./dto/getNodesByTag";
 import { ResponseCode, generateResponse } from "src/utils/Response";
 const watch = require('node-watch');
+
+const config = new Config();
+const DATA_PATH = config.getConfig('DATA_PATH');
 
 
 class ResourceMap {
@@ -50,13 +53,13 @@ class ResourceMap {
 type StructureTree = Map<string, ResourceMap>; 
 function structureTreeBuild(parentRouterPath: string = '', parentRealPath: string = '', belong: string = '_root'): StructureTree {
     //确保配置文件可达
-    if (!existsSync(pkgJson.dataPath + "/resource/content" + parentRealPath + "/_catalog.json")) writeFileSync(pkgJson.dataPath + "/resource/content" + parentRealPath + "/_catalog.json", JSON.stringify({ tags: [], catalog: [] }));
-    if (statSync(pkgJson.dataPath + "/resource/content" + parentRealPath + "/_catalog.json").isDirectory()) throw Error("配置文件名称被名为_catalog.json的同名目录占用");
+    if (!existsSync(DATA_PATH + "/resource/content" + parentRealPath + "/_catalog.json")) writeFileSync(DATA_PATH + "/resource/content" + parentRealPath + "/_catalog.json", JSON.stringify({ tags: [], catalog: [] }));
+    if (statSync(DATA_PATH + "/resource/content" + parentRealPath + "/_catalog.json").isDirectory()) throw Error("配置文件名称被名为_catalog.json的同名目录占用");
     //扫描加载结构树
-    let catalogFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content" + parentRealPath + "/_catalog.json", "utf-8")); 
+    let catalogFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content" + parentRealPath + "/_catalog.json", "utf-8")); 
     if (catalogFile.catalog === undefined) { 
         catalogFile["catalog"] = [];
-        writeFileSync(pkgJson.dataPath + "/resource/content" + parentRealPath + "/_catalog.json", JSON.stringify(catalogFile));
+        writeFileSync(DATA_PATH + "/resource/content" + parentRealPath + "/_catalog.json", JSON.stringify(catalogFile));
     } 
     let catalog = catalogFile.catalog;
     let _structureTree = new Map<string, ResourceMap>();
@@ -89,7 +92,7 @@ export class StructureService {
 
         console.log('-------------加载标签缓存-------------');
         StructureService.updateTagCache();
-        watch(pkgJson.dataPath + "/resource/content/_catalog.json", { recursive: true },
+        watch(DATA_PATH + "/resource/content/_catalog.json", { recursive: true },
             (event, name) => {
                 StructureService.updateTagCache();
             });
@@ -104,7 +107,7 @@ export class StructureService {
     }
 
     addNode(addNodeStructureDto: AddNodeStructureDto) {
-        let catalogFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/" + addNodeStructureDto.configPath, "utf-8"));
+        let catalogFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/" + addNodeStructureDto.configPath, "utf-8"));
         catalogFile.catalog.forEach(item => {
             if (item.name === addNodeStructureDto.name) throw new HttpException("name already exist", ResponseCode.EXISTED_NAME_FAIL);
         });
@@ -118,34 +121,34 @@ export class StructureService {
             "cover": addNodeStructureDto.cover,
             "views": 0
         });
-        writeFileSync(pkgJson.dataPath + "/resource/content/" + addNodeStructureDto.configPath, JSON.stringify(catalogFile));
+        writeFileSync(DATA_PATH + "/resource/content/" + addNodeStructureDto.configPath, JSON.stringify(catalogFile));
 
         const res = StructureService.updateStructureTreeCache();
         return generateResponse(ResponseCode.OK, "", MapSerialize.mapToObj(res));
     }
 
     delNode(delNodeStructureDto: DelNodeStructureDto) {
-        let catalogFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/" + delNodeStructureDto.configPath, "utf-8"));
+        let catalogFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/" + delNodeStructureDto.configPath, "utf-8"));
         catalogFile.catalog = catalogFile.catalog.filter(item => item.name !== delNodeStructureDto.nodeName);
-        writeFileSync(pkgJson.dataPath + "/resource/content/" + delNodeStructureDto.configPath, JSON.stringify(catalogFile));
+        writeFileSync(DATA_PATH + "/resource/content/" + delNodeStructureDto.configPath, JSON.stringify(catalogFile));
 
         const res = StructureService.updateStructureTreeCache();
         return generateResponse(ResponseCode.OK, "", MapSerialize.mapToObj(res));
     }
 
     swapNodes(swapNodesStructureDto: SwapNodesStructureDto) {
-        let catalogFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/" + swapNodesStructureDto.configPath, 'utf-8'));
+        let catalogFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/" + swapNodesStructureDto.configPath, 'utf-8'));
         if (swapNodesStructureDto.index1 >= catalogFile.catalog.length || swapNodesStructureDto.index2 >= catalogFile.catalog.length) throw new HttpException("segment error.", ResponseCode.BAD_SEGMENT);
 
         [catalogFile.catalog[swapNodesStructureDto.index1], catalogFile.catalog[swapNodesStructureDto.index2]] = [catalogFile.catalog[swapNodesStructureDto.index2], catalogFile.catalog[swapNodesStructureDto.index1]];
-        writeFileSync(pkgJson.dataPath + "/resource/content/" + swapNodesStructureDto.configPath, JSON.stringify(catalogFile));
+        writeFileSync(DATA_PATH + "/resource/content/" + swapNodesStructureDto.configPath, JSON.stringify(catalogFile));
 
         const res = StructureService.updateStructureTreeCache();
         return generateResponse(ResponseCode.OK, "", MapSerialize.mapToObj(res));
     }
 
     updateNode(updateNodeStructureDto: UpdateNodeStructureDto) {
-        let catalogFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/" + updateNodeStructureDto.configPath, 'utf-8'));
+        let catalogFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/" + updateNodeStructureDto.configPath, 'utf-8'));
         catalogFile.catalog.forEach((item, index) => {
             if (item.name === updateNodeStructureDto.oldName) {
                 for (let k of Object.keys(updateNodeStructureDto)) {
@@ -154,7 +157,7 @@ export class StructureService {
                 }
             }
         });
-        writeFileSync(pkgJson.dataPath + "/resource/content/" + updateNodeStructureDto.configPath, JSON.stringify(catalogFile));
+        writeFileSync(DATA_PATH + "/resource/content/" + updateNodeStructureDto.configPath, JSON.stringify(catalogFile));
 
         const res = StructureService.updateStructureTreeCache();
         return generateResponse(ResponseCode.OK, "", MapSerialize.mapToObj(res));
@@ -172,37 +175,37 @@ export class StructureService {
         if (repeat) return "同名标签已经存在。";
 
 
-        let tagFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", "utf-8"));
+        let tagFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/_catalog.json", "utf-8"));
         tagFile.tags.push(addTagStructureDto.tagName);
-        writeFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", JSON.stringify(tagFile));
+        writeFileSync(DATA_PATH + "/resource/content/_catalog.json", JSON.stringify(tagFile));
 
         return generateResponse(ResponseCode.OK, "", tagFile.tags);
     }
 
     delTag(delTagStructureDto: DelTagStructureDto) {
-        let tagFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", "utf-8"));
+        let tagFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/_catalog.json", "utf-8"));
         tagFile.tags = tagFile.tags.filter(item => item !== delTagStructureDto.tagName);
-        writeFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", JSON.stringify(tagFile));
+        writeFileSync(DATA_PATH + "/resource/content/_catalog.json", JSON.stringify(tagFile));
         return generateResponse(ResponseCode.OK, "", tagFile.tags);
     }
 
     swapTags(swapTagsStructureDto: SwapTagsStructureDto) {
-        let tagFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", "utf-8"));
+        let tagFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/_catalog.json", "utf-8"));
         if (swapTagsStructureDto.index1 >= tagFile.tags.length || swapTagsStructureDto.index2 >= tagFile.tags.length) throw new HttpException("segment error.", HttpStatus.BAD_REQUEST);
 
         [tagFile.tags[swapTagsStructureDto.index1], tagFile.tags[swapTagsStructureDto.index2]] = [tagFile.tags[swapTagsStructureDto.index2], tagFile.tags[swapTagsStructureDto.index1]];
-        writeFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", JSON.stringify(tagFile));
+        writeFileSync(DATA_PATH + "/resource/content/_catalog.json", JSON.stringify(tagFile));
         return generateResponse(ResponseCode.OK, "", tagFile.tags);
     }
 
     updateTag(updateTagStructureDto: UpdateTagStructureDto) {
-        let tagFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", "utf-8"));
+        let tagFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/_catalog.json", "utf-8"));
         tagFile.tags.forEach((item, index) => {
             if (item === updateTagStructureDto.oldTagName) {
                 tagFile.tags[index] = updateTagStructureDto.newTagName;
             }
         });
-        writeFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", JSON.stringify(tagFile));
+        writeFileSync(DATA_PATH + "/resource/content/_catalog.json", JSON.stringify(tagFile));
         return generateResponse(ResponseCode.OK, "", tagFile.tags);
     }
 
@@ -212,10 +215,10 @@ export class StructureService {
 
     static updateTagCache(): string[] {
         try {
-            let tagFile = JSON.parse(readFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", "utf-8"));
+            let tagFile = JSON.parse(readFileSync(DATA_PATH + "/resource/content/_catalog.json", "utf-8"));
             if (tagFile.tags === undefined) {
                 tagFile["tags"] = [];
-                writeFileSync(pkgJson.dataPath + "/resource/content/_catalog.json", JSON.stringify(tagFile));
+                writeFileSync(DATA_PATH + "/resource/content/_catalog.json", JSON.stringify(tagFile));
             }
 
             this.tagList = [];

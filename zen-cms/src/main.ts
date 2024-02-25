@@ -4,19 +4,20 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import "reflect-metadata";
 import { join } from 'path';
 import cookieParser from 'cookie-parser';
-import { ConfigService } from '@nestjs/config';
+import Config from './utils/Config';
+
+//全局变量/配置
+const config = new Config();
 
 async function bootstrap() {
   console.log("----------通过组合键Ctrl+C关闭应用----------");
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  //先拿到全局变量
-  const configService = app.get(ConfigService);
 
   //cookie处理中间件
   app.use(cookieParser());
   //配置前端网页
   app.useStaticAssets(join(__dirname, '../..', 'static'));
-  await app.listen(configService.get('PORT')); 
+  await app.listen(config.getConfig('PORT')); 
 }
 bootstrap();

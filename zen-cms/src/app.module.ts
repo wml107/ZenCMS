@@ -1,15 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import * as Joi from '@hapi/joi';
+import Config from './utils/Config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostModule } from './post.module/post.module';
 import { ValidationPipe } from './pipes/validate.pipe';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ResourceModule } from './resource.module/resource.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { StructureModule } from './structure.module/structure.module';
-import pkgJson from "../package.json";
 import { SiteModule } from './site.module/site.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users.module/users.module';
@@ -23,28 +20,22 @@ import { ReqLog } from './log.module/entities/ReqLog.entities';
 import { LogModule } from './log.module/log.module';
 import { LogErrorFilter } from './filter/logError.filter';
 
+//全局变量&用户配置
+const config = new Config();
+
 @Module({
   imports: [
-    //全局变量&用户配置
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validationSchema: Joi.object({
-        PORT: Joi.number().min(1).required(),
-        DATA_PATH: Joi.string().required(),
-        TOKEN_SECRET: Joi.string().required(),
-      }),
-    }),
     //配置sqlite
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: pkgJson.dataPath + '/db.sql',
+      database: config.getConfig('DATA_PATH') + '/db.sql',
       entities: [User, Role, Post, ReqLog],
       autoLoadEntities: true,
       synchronize: true,
     }),
     //提供静态资源
     ServeStaticModule.forRoot({
-      rootPath: pkgJson.dataPath + '/resource',
+      rootPath: config.getConfig('DATA_PATH') + '/resource',
       serveRoot: '/resource',
       exclude: [
         'content',

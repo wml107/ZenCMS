@@ -7,13 +7,16 @@ import { UpdateTagStructureDto } from "./dto/updateTag.structure";
 import { AddNodeStructureDto } from "./dto/addNode.structure";
 import { DelNodeStructureDto } from "./dto/delNode.structure";
 import { pathAuthorityValidation } from "src/utils/pathAuthorityValidation";
-import pkgJson from "../../package.json";
+import Config from '../utils/Config';
 import path from "path";
 import { SwapNodesStructureDto } from "./dto/swapNodes.structure";
 import { UpdateNodeStructureDto } from "./dto/updateNode.structure";
 import { GetNodesByTagStructureDto } from "./dto/getNodesByTag";
 import { Public, StructureW } from "src/auth/authorization.decorator";
 import { ResponseCode } from "src/utils/Response";
+
+const config = new Config();
+const DATA_PATH = config.getConfig('DATA_PATH');
 
 @Controller("structure")
 export class StructureController {
@@ -30,9 +33,9 @@ export class StructureController {
     addNode(@Body() addNodeStructureDto: AddNodeStructureDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/content/',
-            pkgJson.dataPath + '/resource/content/' + addNodeStructureDto.configPath
-        ) || !path.normalize(pkgJson.dataPath + '/resource/content/' + addNodeStructureDto.configPath).endsWith('_catalog.json')
+            DATA_PATH + '/resource/content/',
+            DATA_PATH + '/resource/content/' + addNodeStructureDto.configPath
+        ) || !path.normalize(DATA_PATH + '/resource/content/' + addNodeStructureDto.configPath).endsWith('_catalog.json')
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.structureService.addNode(addNodeStructureDto);
@@ -43,9 +46,9 @@ export class StructureController {
     delNode(@Body() delNodeStructureDto: DelNodeStructureDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/content/',
-            pkgJson.dataPath + '/resource/content/' + delNodeStructureDto.configPath
-        ) || !path.normalize(pkgJson.dataPath + '/resource/content/' + delNodeStructureDto.configPath).endsWith('_catalog.json')
+            DATA_PATH + '/resource/content/',
+            DATA_PATH + '/resource/content/' + delNodeStructureDto.configPath
+        ) || !path.normalize(DATA_PATH + '/resource/content/' + delNodeStructureDto.configPath).endsWith('_catalog.json')
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.structureService.delNode(delNodeStructureDto);
@@ -56,9 +59,9 @@ export class StructureController {
     swapNodes(@Body() swapNodesStructureDto: SwapNodesStructureDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/content/',
-            pkgJson.dataPath + '/resource/content/' + swapNodesStructureDto.configPath
-        ) || !path.normalize(pkgJson.dataPath + '/resource/content/' + swapNodesStructureDto.configPath).endsWith('_catalog.json')
+            DATA_PATH + '/resource/content/',
+            DATA_PATH + '/resource/content/' + swapNodesStructureDto.configPath
+        ) || !path.normalize(DATA_PATH + '/resource/content/' + swapNodesStructureDto.configPath).endsWith('_catalog.json')
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.structureService.swapNodes(swapNodesStructureDto);
@@ -69,9 +72,9 @@ export class StructureController {
     updateNode(@Body() updateNodeStructureDto: UpdateNodeStructureDto){
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
-            pkgJson.dataPath + '/resource/content/',
-            pkgJson.dataPath + '/resource/content/' + updateNodeStructureDto.configPath
-        ) || !path.normalize(pkgJson.dataPath + '/resource/content/' + updateNodeStructureDto.configPath).endsWith('_catalog.json')
+            DATA_PATH + '/resource/content/',
+            DATA_PATH + '/resource/content/' + updateNodeStructureDto.configPath
+        ) || !path.normalize(DATA_PATH + '/resource/content/' + updateNodeStructureDto.configPath).endsWith('_catalog.json')
         ) throw new HttpException('out-of-bounds path', ResponseCode.OUT_OF_BOUNDS_PATH);
 
         return this.structureService.updateNode(updateNodeStructureDto);
