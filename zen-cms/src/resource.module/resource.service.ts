@@ -6,7 +6,7 @@ import { CreateFileResourceDto } from "./dto/createFile.resource";
 import { CreateCatalogResourceDto } from "./dto/createCatalog.resource";
 import { UpdateResourceDto } from "./dto/update.resource";
 import { RenameResourceDto } from "./dto/rename.resource";
-import path, { normalize } from "path";
+import path from "path";
 import { DeleteResourceDto } from "./dto/delete.resource";
 import { RecoveryResourceDto } from "./dto/recovery.resource";
 import { CopyResourceDto } from "./dto/copy.resource";
@@ -15,6 +15,7 @@ import { UploadResourceDto } from "./dto/upload.resource";
 import { ImportResourceDto } from "./dto/import.resource";
 import { ResponseCode, generateResponse } from "src/utils/Response";
 import Config from '../utils/Config';
+import EventEmitter from "events";
 const compressing = require('compressing');
 const fs = require('fs');
 //文件监听我看网上都推荐chokidar，但这个库并不好用，你们可以去试试能不能复现我的错误：
@@ -24,6 +25,8 @@ const watch = require('node-watch');
 
 const config = new Config();
 const DATA_PATH = config.getConfig('DATA_PATH');
+
+const emitter = new EventEmitter();
 
 
 @Injectable()
@@ -403,35 +406,36 @@ export class ResourceService {
         initContent: '{}'
       },
     ]
-    console.log('----------数据目录完整性检测----------');
+    console.log('----------Data directory integrity inspecting----------');
     if (!existsSync(DATA_PATH)) {
-      console.log('数据目录不可达，正在和网站目录同级的位置将创建新目录data......完成后请在.env中将配置更新为该路径或其他有效路径');
+      console.log('The data directory is not reachable and a new directory named data will be created at the same level as the site directory... After finishing, please restart the application for the configuration to take effect.');
       const newPath = path.normalize(__dirname + '../../../../../data');
       if (!existsSync(newPath)) mkdirSync(newPath);
       if (!statSync(newPath).isDirectory()) {
-        const choice = require('readline-sync').question('检测到data目录所在位置被名为data的文件占用，是否删除该文件以创建data目录(Y/N)？');
+        const choice = require('readline-sync').question('Detected that the location of the data directory is occupied by a file named data, delete the file to create the data directory(Y/N)？');
         if (choice === 'y' || choice === 'Y') {
           unlinkSync(newPath);
           mkdirSync(newPath);
         }else{
-          console.log("应用已关闭。");
-          process.exit(0);
+          console.log("App has been closed.");
+          emitter.emit('exit');
         }
       }
-      console.log("应用已关闭，请重启应用。");
-      process.exit(0);
+      config.setConfig('DATA_PATH', newPath);
+      // console.log("App has been closed, please restart the app.");
+      // emitter.emit('exit'); 
     }
     if (!statSync(DATA_PATH).isDirectory()) {
-      const choice = require('readline-sync').question('所设置的数据目录路径被同名文件占用，是否删除该文件以创建目录(Y/N)？');
+      const choice = require('readline-sync').question('The path to the data directory set in config is occupied by a file with the same name, is the file deleted to create the directory(Y/N)？');
       if (choice === 'y' || choice === 'Y') {
         unlinkSync(DATA_PATH);
         mkdirSync(DATA_PATH);
       }else{
-        console.log("应用已关闭。");
-        process.exit(0);
+        console.log("App has been closed.");
+        emitter.emit('exit');
       }
-      console.log("应用已关闭，请重启应用。");
-      process.exit(0);
+      console.log("App has been closed, please restart the app.");
+      emitter.emit('exit');
     }
 
     for (let i = 0; i < DirectoryNeedCheck.length; i++) {
