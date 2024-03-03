@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Patch, Post, Put } from "@nestjs/common";
 import { StructureService } from "./structure.service";
 import { AddTagStructureDto } from "./dto/addTag.structure";
 import { DelTagStructureDto } from "./dto/delTag.structure";
@@ -41,7 +41,7 @@ export class StructureController {
         return this.structureService.addNode(addNodeStructureDto);
     }
 
-    @Post('delNode')
+    @Delete('delNode')
     @StructureW()
     delNode(@Body() delNodeStructureDto: DelNodeStructureDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -54,7 +54,7 @@ export class StructureController {
         return this.structureService.delNode(delNodeStructureDto);
     }
 
-    @Post('swapNodes')
+    @Patch('swapNodes')
     @StructureW()
     swapNodes(@Body() swapNodesStructureDto: SwapNodesStructureDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -67,7 +67,7 @@ export class StructureController {
         return this.structureService.swapNodes(swapNodesStructureDto);
     }
 
-    @Post('updateNode')
+    @Put('updateNode')
     @StructureW()
     updateNode(@Body() updateNodeStructureDto: UpdateNodeStructureDto){
         //用于额外校验路径是否合法，详见方法中注释
@@ -92,25 +92,25 @@ export class StructureController {
         return this.structureService.addTag(addTagStructureDto);
     }
 
-    @Post('delTag')
+    @Delete('delTag')
     @StructureW()
     delTag(@Body() delTagStructureDto: DelTagStructureDto) {
         return this.structureService.delTag(delTagStructureDto);
     }
 
-    @Post('swapTags')
+    @Patch('swapTags')
     @StructureW()
     swapTags(@Body() swapTagsStructureDto: SwapTagsStructureDto) {
         return this.structureService.swapTags(swapTagsStructureDto);
     }
 
-    @Post('updateTag')
+    @Put('updateTag')
     @StructureW()
     updateTag(@Body() updateTagStructureDto: UpdateTagStructureDto) {
         return this.structureService.updateTag(updateTagStructureDto);
     }
 
-    @Post('getNodesByTag')
+    @Get('getNodesByTag')
     getNodesByTag(@Body() getNodesByTagSructureDto: GetNodesByTagStructureDto){
         return this.structureService.getNodesByTag(getNodesByTagSructureDto);
     }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Delete, Put, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create.post';
 import { ListPostDto } from './dto/list.post';
@@ -11,7 +11,7 @@ import { ResponseCode, generateResponse } from 'src/utils/Response';
 export class PostController {
     constructor(private postService: PostService) { }
 
-    @Post('list')
+    @Get('list')
     @Public()
     async list(@Body() listPostDto: ListPostDto) {
         const res = await this.postService.list(listPostDto);
@@ -24,12 +24,12 @@ export class PostController {
         if(await this.postService.create(createPostDto)) return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('delete')
+    @Delete('delete')
     @PostW()
     async delete(@Body() deletePostDto: DeletePostDto) {
         if(await this.postService.delete(deletePostDto)) return generateResponse(ResponseCode.OK, "", null);
     }
-    @Post('update')
+    @Put('update')
     @PostW()
     async update(@Body() updatePostDto: UpdatePostDto) {
         if(await this.postService.update(updatePostDto)) return generateResponse(ResponseCode.OK, "", null);
