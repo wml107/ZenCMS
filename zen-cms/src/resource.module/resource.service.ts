@@ -15,7 +15,6 @@ import { UploadResourceDto } from "./dto/upload.resource";
 import { ImportResourceDto } from "./dto/import.resource";
 import { ResponseCode, generateResponse } from "src/utils/Response";
 import Config from '../utils/Config';
-import EventEmitter from "events";
 const compressing = require('compressing');
 const fs = require('fs');
 //文件监听我看网上都推荐chokidar，但这个库并不好用，你们可以去试试能不能复现我的错误：
@@ -25,8 +24,6 @@ const watch = require('node-watch');
 
 const config = new Config();
 const DATA_PATH = config.getConfig('DATA_PATH');
-
-const emitter = new EventEmitter();
 
 
 @Injectable()
@@ -417,13 +414,11 @@ export class ResourceService {
           unlinkSync(newPath);
           mkdirSync(newPath);
         }else{
-          console.log("App has been closed.");
-          emitter.emit('exit');
+          console.log("App should be closed.");
+          process.exit(0);
         }
       }
       config.setConfig('DATA_PATH', newPath);
-      // console.log("App has been closed, please restart the app.");
-      // emitter.emit('exit'); 
     }
     if (!statSync(DATA_PATH).isDirectory()) {
       const choice = require('readline-sync').question('The path to the data directory set in config is occupied by a file with the same name, is the file deleted to create the directory(Y/N)？');
@@ -432,10 +427,10 @@ export class ResourceService {
         mkdirSync(DATA_PATH);
       }else{
         console.log("App has been closed.");
-        emitter.emit('exit');
+        process.exit(0);
       }
       console.log("App has been closed, please restart the app.");
-      emitter.emit('exit');
+      process.exit(0);
     }
 
     for (let i = 0; i < DirectoryNeedCheck.length; i++) {

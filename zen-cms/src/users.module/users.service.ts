@@ -36,10 +36,10 @@ export class UsersService {
         //检查或初始化根用户
         const hasRoot = await userRepository.createQueryBuilder("User").getMany();
         if (hasRoot.length === 0) {
-            const rootUsername = require('readline-sync').question("初始化超级管理员用户名：");
-            let rootPassword = require('readline-sync').question("初始化超级管理员密码(不能为空)：");
+            const rootUsername = require('readline-sync').question("Initialize the super admin username: ");
+            let rootPassword = require('readline-sync').question("Initialize the super admin pwd (cannot be empty): ");
             while(rootPassword===''){
-                rootPassword = require('readline-sync').question("密码不能为空，请重新输入：");
+                rootPassword = require('readline-sync').question("Password cannot be empty, please re-enter it: ");
             }
             await userRepository.insert({
                 username: rootUsername,
