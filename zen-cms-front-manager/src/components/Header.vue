@@ -1,6 +1,6 @@
 <template>
     <!-- 导航 -->
-    <nav class="navbar sticky-top navbar-expand-lg" style="background-color: #6610f2; opacity: .9;">
+    <nav v-if="!isLogin" class="navbar sticky-top navbar-expand-lg" style="background-color: #6610f2; opacity: .9;">
         <div class="container-fluid">
             <a class="navbar-brand text-light" href="/home">ZenCMS</a>
             <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
@@ -16,28 +16,37 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <router-link class="nav-link dropdown-toggle text-light" :to="{ name: 'Home' }"
-                            data-bs-toggle="dropdown" aria-expanded="false">仪表盘</router-link>
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            仪表盘
+                        </a>
                         <ul class="dropdown-menu">
                             <li><router-link class="dropdown-item" :to="{ name: 'HomeInfo' }">网站信息</router-link></li>
-                            <li><router-link class="dropdown-item" :to="{ name: 'HomeMonitorService' }">业务监测</router-link></li>
-                            <li><router-link class="dropdown-item" :to="{ name: 'HomeMonitorHardware' }">硬件监测</router-link></li>
+                            <li><router-link class="dropdown-item"
+                                    :to="{ name: 'HomeMonitorService' }">业务监测</router-link></li>
+                            <li><router-link class="dropdown-item"
+                                    :to="{ name: 'HomeMonitorHardware' }">硬件监测</router-link></li>
                             <li><router-link class="dropdown-item" :to="{ name: 'HomeFooter' }">页脚配置</router-link></li>
-                            <li><router-link class="dropdown-item" :to="{ name: 'HomeSystemData' }">系统数据</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'HomeSystemData' }">系统数据</router-link>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="/resource" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             资源
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/resource">内容</a></li>
-                            <li><a class="dropdown-item" href="/resource/htmlPlugin">HTML插件</a></li>
-                            <li><a class="dropdown-item" href="/resource/pic">图片</a></li>
-                            <li><a class="dropdown-item" href="/resource/file">文件</a></li>
-                            <li><a class="dropdown-item" href="/resource/view">浏览内容</a></li>
-                            <li><a class="dropdown-item" href="/resource/edit">编辑内容</a></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'ResourceArticle' }">内容</router-link>
+                            </li>
+                            <li><router-link class="dropdown-item"
+                                    :to="{ name: 'ResourceHtmlPlugin' }">HTML插件</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'ResourcePic' }">图片</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'ResourceFile' }">文件</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'ResourceView' }">浏览内容</router-link>
+                            </li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'ResourceEdit' }">编辑内容</router-link>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -53,14 +62,14 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light" href="/user" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             用户
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/user">账户</a></li>
-                            <li><a class="dropdown-item" href="/user/role">角色</a></li>
-                            <li><a class="dropdown-item" href="/user/user">用户</a></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'Account' }">账户</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'Role' }">角色</router-link></li>
+                            <li><router-link class="dropdown-item" :to="{ name: 'UserUser' }">用户</router-link></li>
                         </ul>
                     </li>
                 </ul>
@@ -70,19 +79,24 @@
 </template>
 
 <script setup name="Header">
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
-
 const route = useRoute();
+
+const isLogin = ref(false);
 
 watch(
     () => route.params,
-    (newVal, oldVal) => {
-        console.log(newVal)
-        console.log(oldVal)
-        console.log(route)
+    () => {
+        if(route.matched.some(record => record.path === '/login')){
+            isLogin.value = true;
+        }else{
+            isLogin.value = false;
+        }
     },
-    { immediate: true }
+    {
+        immediate: true,
+    }
 );
 </script>
 

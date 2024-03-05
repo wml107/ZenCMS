@@ -146,7 +146,7 @@ const routes = [
       },
       {
         path: '/user/user',
-        name: "User",
+        name: "UserUser",
         component: UserUser,
         meta: {
           claim: 'UserR'

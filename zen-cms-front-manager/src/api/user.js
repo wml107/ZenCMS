@@ -28,7 +28,7 @@ export default {
     },
     async passwordUpdate(newPassword){
         const res = await axios({
-            method: 'post',
+            method: 'put',
             url: 'user/updatePassword',
             data: {
                 newPassword: newPassword
@@ -56,7 +56,7 @@ export default {
     },
     async updateRole( oldRolename, rolename, claims){
         const res = await axios({
-            method: 'post',
+            method: 'put',
             url: 'user/updateRole',
             data: {
                 oldRolename: oldRolename,
@@ -68,7 +68,7 @@ export default {
     },
     async delRole(rolename){
         const res = await axios({
-            method: 'post',
+            method: 'delete',
             url: 'user/delRole',
             data: {
                 rolename: rolename
@@ -97,7 +97,7 @@ export default {
     },
     async updateUser( updateData ){
         const res = await axios({
-            method: 'post',
+            method: 'put',
             url: 'user/updateUser',
             data: updateData
         });
@@ -105,7 +105,7 @@ export default {
     },
     async delUser(username){
         const res = await axios({
-            method: 'post',
+            method: 'delete',
             url: 'user/delUser',
             data: {
                 username: username

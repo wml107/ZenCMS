@@ -89,7 +89,7 @@
 import { ElMessage } from 'element-plus';
 import { mapState, mapActions } from 'vuex';
 export default {
-    name: "userUser",
+    name: "UserUser",
     data() {
         return {
             createUserVisible: false,
