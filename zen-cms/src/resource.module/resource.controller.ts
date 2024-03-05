@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { GetResourceDto } from './dto/get.resource';
 import { ListResourceDto } from './dto/list.resource';
@@ -34,7 +34,7 @@ export class ResourceController {
 
     //有一些输入的边界情况，即不会对客户端体验造成影响，也不会造成服务器错误破坏系统。这些情况全都校验效率太低，或让代码臃肿，对于这些情况，我选择忽略或者用简单的无差别转换代替校验。涉及这种情况的地方会有说明。
 
-    @Post('get')
+    @Get('get')
     @Public()
     async get(@Body() getResourceDto: GetResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -47,7 +47,7 @@ export class ResourceController {
         return generateResponse(ResponseCode.OK, "", res);
     }
 
-    @Post('list')
+    @Get('list')
     @ResourceR()
     async list(@Body() listResourceDto: ListResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -61,7 +61,7 @@ export class ResourceController {
         return generateResponse(ResponseCode.OK, "", res);
     }
 
-    @Post('download')
+    @Get('download')
     @ResourceR()
     download(@Body() downloadResourceDto: DownloadResourceDto, @Res() res: Response) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -128,7 +128,7 @@ export class ResourceController {
         return this.resourceService.createCatalog(createCatalogResourceDto);
     }
 
-    @Post('update')
+    @Put('update')
     @ResourceW()
     update(@Body() updateResourceDto: UpdateResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -140,7 +140,7 @@ export class ResourceController {
         return this.resourceService.update(updateResourceDto);
     }
 
-    @Post('rename')
+    @Put('rename')
     @ResourceW()
     rename(@Body() renameResourceDto: RenameResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -180,7 +180,7 @@ export class ResourceController {
         return this.resourceService.cut(cutResourceDto);
     }
 
-    @Post('delete')
+    @Put('delete')
     @ResourceW()
     delete(@Body() deleteResourceDto: DeleteResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
@@ -192,7 +192,7 @@ export class ResourceController {
         if(this.resourceService.delete(deleteResourceDto))return generateResponse(ResponseCode.OK, "", null);
     }
 
-    @Post('recovery')
+    @Put('recovery')
     @ResourceW()
     recovery(@Body() recoveryResourceDto: RecoveryResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
