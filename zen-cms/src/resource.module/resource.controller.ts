@@ -49,7 +49,7 @@ export class ResourceController {
 
     @Get('list')
     @ResourceR()
-    async list(@Body() listResourceDto: ListResourceDto) {
+    async list(@Query() listResourceDto: ListResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (listResourceDto.resourceType !== 'bin' && listResourceDto.resourceType !== 'htmlPlugin' && !pathAuthorityValidation(
             DATA_PATH + '/resource/' + listResourceDto.resourceType + "/",
@@ -63,7 +63,7 @@ export class ResourceController {
 
     @Get('download')
     @ResourceR()
-    download(@Body() downloadResourceDto: DownloadResourceDto, @Res() res: Response) {
+    download(@Query() downloadResourceDto: DownloadResourceDto, @Res() res: Response) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
             DATA_PATH + "/resource/" + downloadResourceDto.resourceType + "/",
@@ -206,7 +206,7 @@ export class ResourceController {
 
     @Get('export')
     @ResourceR()
-    async export(@Res() res: Response) {
+    async export(@Query() res: Response) {
         const tempName = "_datatemp" + Date.now() + ".zip"
         await compressing.zip.compressDir(DATA_PATH, DATA_PATH + "/../" + tempName);
         res.download(DATA_PATH + "/../" + tempName, "data.zip", function (err) {
