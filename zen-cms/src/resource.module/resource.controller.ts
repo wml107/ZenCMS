@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Put, Query, Res, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { ResourceService } from './resource.service';
 import { GetResourceDto } from './dto/get.resource';
 import { ListResourceDto } from './dto/list.resource';
@@ -36,7 +36,7 @@ export class ResourceController {
 
     @Get('get')
     @Public()
-    async get(@Body() getResourceDto: GetResourceDto) {
+    async get(@Query() getResourceDto: GetResourceDto) {
         //用于额外校验路径是否合法，详见方法中注释
         if (!pathAuthorityValidation(
             DATA_PATH + '/resource/content/',
