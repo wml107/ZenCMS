@@ -1,3 +1,4 @@
+import path from 'path';
 import resourceApi from '../api/resource';
 
 const moduleResource = {
@@ -7,14 +8,14 @@ const moduleResource = {
         list: [],
     },
     mutations: {
-        go(state, target, list){
+        go(state, {target, list}) {
             state.path = target;
             state.list = list;
         },
-        refresh(state, list){
+        refresh(state, list) {
             state.list = list;
         },
-        forward(state, target, list) {
+        forward(state, {target, list}) {
             state.push(target);
             state.path = state.path;
             state.list = list;
@@ -27,32 +28,39 @@ const moduleResource = {
         }
     },
     actions: {
-        async go({commit}, {type, path}){
+        async go({ commit }, { type, path }) {
             const res = await resourceApi.getList(type, null, path);
             let target = [type].concat(path.split('/'));
             target = target.filter(item => item != '');
-            commit('go', target, res);
+            commit('go', {target: target, list: res.data});
             return true;
         },
-        async refresh({commit, rootState}){
+        async refresh({ commit, rootState }) {
             let path = rootState.resource.path.slice(1).join('/');
             const res = await resourceApi.getList(rootState.resource.path[0], null, path);
-            commit('refresh', res);
+            commit('refresh', res.data);
             return true;
         },
-        async forward({commit, rootState}, target){
-            if(!rootState.resource.list.includes(target)) return false;
+        async forward({ commit, rootState }, target) {
+            if (!rootState.resource.list.includes(target)) return false;
             let path = rootState.resource.path.slice(1).concat([target]).join('/');
             let list = await resourceApi.getList(rootState.resource.path[0], null, path);
-            commit('forward', target, list);
+            commit('forward', {target: target, list: list});
             return true;
         },
-        async backward({commit, rootState}){
-            if(rootState.resource.path.length < 2) return false;
+        async backward({ commit, rootState }) {
+            if (rootState.resource.path.length < 2) return false;
             let path = rootState.resource.path.slice(1, rootState.resource.path.length - 1).join('/');
             let list = await resourceApi.getList(rootState.resource.path[0], null, path);
             commit('backward', list);
             return true;
+        },
+        async createCatalog({ dispatch, rootState }, { name }) {
+            const res = await resourceApi.createCatalog(name, rootState.resource.path[0], rootState.resource.path.slice(1).join('/'));
+            if (res.statusCode === 200) {
+                dispatch('refresh');
+                return true;
+            }else return false;
         },
     },
     modules: {

@@ -14,4 +14,17 @@ export default {
         });
         return res.data;
     },
+    //新建目录
+    async createCatalog(name, type, path){
+        const res = await axios({
+            method: 'post',
+            url: '/resource/createCatalog',
+            data: {
+                catalogName: name,
+                resourceType: type,
+                path: path
+            }
+        });
+        return res.data;
+    },
 }
