@@ -72,7 +72,18 @@ export class ResourceService {
       } else if (listResourceDto.resourceType === 'htmlPlugin') {
         return ResourceService.htmlPluginList;
       } else {
-        const dir = fs.readdirSync(DATA_PATH + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path, 'utf-8');
+        const dir = [];
+        const dirName = fs.readdirSync(DATA_PATH + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path, 'utf-8');
+        dirName.forEach(item => {
+          const stat = fs.statSync(DATA_PATH + '/resource/' + listResourceDto.resourceType + '/' + listResourceDto.path + '/' + item);
+          dir.push({
+            name: item,
+            isDir: stat.isDirectory(),
+            size: stat.size,
+            updateTime: stat.mtime,
+            createTime: stat.birthtime,
+          });
+        });
         return dir;
       }
     } catch (err) {
