@@ -12,6 +12,7 @@
     "bootstrap": "^5.3.3",
     "core-js": "^3.32.2",
     "element-plus": "^2.3.14",
+    "moment": "^2.30.1",
     "mutationobserver-shim": "^0.3.7",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
