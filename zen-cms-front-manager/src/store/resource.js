@@ -62,6 +62,36 @@ const moduleResource = {
                 return true;
             }else return false;
         },
+        async del({ dispatch, rootState }, { name }){
+            if(rootState.resource.path[0] != 'bin'){
+                //删到回收站
+                let resourceType = rootState.resource.path[0], 
+                    type = 'bin', 
+                    path = rootState.resource.path.slice(1, rootState.resource.path.length - 1).concat([name]).join('/');
+                const res = await resourceApi.del(resourceType, path, type);
+                if(res.statusCode === 200) {
+                    dispatch('refresh');
+                    return true;
+                }else return false;
+            }else{
+                //永久删除
+            }
+        },
+        async rename({ dispatch, rootState}, { fileName, newName }){
+            let resourceType = rootState.resource.path[0],
+                path = rootState.resource.path.slice(1, rootState.resource.path.length - 1).concat([fileName]).join('/');
+            const res = await resourceApi.rename(resourceType, path, newName);
+            if(res.statusCode === 200) {
+                dispatch('refresh');
+                return true;
+            }else return false;
+        },
+        async download({ rootState }, { name }){
+            let resourceType = rootState.resource.path[0],
+                path = rootState.resource.path.slice(1, rootState.resource.path.length - 1).concat([name]).join('/');
+            const res = await resourceApi.download(resourceType, path);
+            console.log(res)
+        }
     },
     modules: {
     }
